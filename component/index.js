@@ -13,3 +13,4 @@ export * from "./Window";
 export * from "./UploadImage";
 export * from "./CopyWindow";
 export * from "./GlobalStyles";
+export * from "./CustomImg";

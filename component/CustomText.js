@@ -4,11 +4,12 @@ import styled from "styled-components";
 import { colorStyle } from "../lib/data/styleData";
 
 const fontWeight = ({ fontWeight }) => {
+  console.log("##fontWeight", fontWeight);
   return fontWeight ? `font-weight: ${fontWeight};` : `font-weight: normal;`;
 };
 
 const fontSize = ({ fontSize }) => {
-  return fontSize ? `font-size: ${fontSize};` : `font-size: 12px;`;
+  return fontSize ? `font-size: ${fontSize}px;` : `font-size: 12px;`;
 };
 
 const color = ({ color }) => {
@@ -16,13 +17,13 @@ const color = ({ color }) => {
 };
 
 const textAlign = ({ textAlign }) => {
-  return textAlign ? `text-align: ${textAlign};` : `text-align: center`;
+  return textAlign ? `text-align: ${textAlign};` : `text-align: center;`;
 };
 
-const overflow = ({ overflow }) => {
-  return overflow === "tail"
-    ? `text-overflow: ellipsis ;`
-    : `text-overflow: clip`;
+const ellipsizeMode = ({ ellipsizeMode }) => {
+  return ellipsizeMode === "tail"
+    ? `text-overflow: ellipsis;`
+    : `text-overflow: clip;`;
 };
 
 const FontDiv = styled.div`
@@ -30,7 +31,7 @@ const FontDiv = styled.div`
   ${fontSize}
   ${color}
   ${textAlign}
-  ${overflow}
+  ${ellipsizeMode}
 `;
 
 export const CustomText = ({
@@ -38,10 +39,8 @@ export const CustomText = ({
   fontSize,
   fontWeight,
   color,
-
   ellipsizeMode,
   textAlign,
-  ...rest
 }) => {
   return (
     <FontDiv
@@ -49,6 +48,7 @@ export const CustomText = ({
       fontSize={fontSize}
       color={color}
       textAlign={textAlign}
+      ellipsizeMode={ellipsizeMode}
     >
       {children}
     </FontDiv>

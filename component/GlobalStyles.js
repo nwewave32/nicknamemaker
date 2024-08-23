@@ -25,3 +25,7 @@ export const HeaderBtn = styled(FlexBox)`
   border-color: ${colorStyle.white} ${colorStyle.darkGray}
     ${colorStyle.darkGray} ${colorStyle.white};
 `;
+
+export const FullContainer = styled(FlexBox)`
+  width: 100%;
+`;

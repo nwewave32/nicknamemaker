@@ -9,30 +9,18 @@ import { CopyWindow } from "./CopyWindow";
 
 const WindowContainer = styled.div`
   position: absolute;
-
   width: 100%;
-  background-color: pink;
+
   padding: 10px;
-  visibility: ${(props) => (props.visible ? "visible" : "hidden")};
+  visibility: ${(props) => props.visible};
 `;
 
 //real window with function
-export const Window = ({
-  msg,
-  title,
-  icon,
-  introWindowVisible,
-  setIntroWindowVisible,
-  setIntroWindowDelete,
-  pos,
-  setPos,
-  originPos,
-  clientPos,
-  setOriginPos,
-  setClientPos,
-  ...rest
-}) => {
+export const Window = ({ window, toggleVisibility, closeWindow, ...rest }) => {
   const windowRef = useRef(null);
+  const [originPos, setOriginPos] = useState({ x: 0, y: 0 }); // 드래그 전 포지션값 (e.target.offset의 상대 위치)
+  const [clientPos, setClientPos] = useState({ x: 0, y: 0 }); // 실시간 커서위치인 e.client를 갱신하는값
+  const [pos, setPos] = useState({ left: 0, top: 0 }); // 실제 drag할 요소가 위치하는 포지션값
 
   const dragStartHandler = (e) => {
     const blankCanvas = document.createElement("canvas");
@@ -93,7 +81,7 @@ export const Window = ({
 
   return (
     <WindowContainer
-      visible={introWindowVisible}
+      visible={window.visible ? "visible" : "hidden"}
       ref={windowRef}
       draggable
       onDragStart={(e) => dragStartHandler(e)}
@@ -102,15 +90,13 @@ export const Window = ({
       onDragEnd={(e) => dragEndHandler(e)}
       style={{ left: pos.left, top: pos.top }}
     >
-      {`pos: (${pos.left}, ${pos.top})  `}
-      {`origin: (${originPos.x}, ${originPos.y})  `}
-      {`client: (${clientPos.x}, ${clientPos.y})`}
       <CopyWindow
-        msg={msg}
-        title={title}
-        icon={icon}
-        setWindowVisible={setIntroWindowVisible}
-        setWindowDelete={setIntroWindowDelete}
+        id={window.id}
+        msg={window.msg}
+        title={window.title}
+        icon={window.icon}
+        setWindowVisible={toggleVisibility}
+        setWindowDelete={closeWindow}
       />
     </WindowContainer>
   );

@@ -16,13 +16,15 @@ const HeaderContainer = styled(BorderBox)`
 `;
 
 const ModalContainer = styled(FlexBox)`
-  width: 80%;
+  min-width: 300px;
+  max-width: 60%;
   border-width: 0 1px 1px 0;
   border-bottom-color: ${colorStyle.darkGray};
   border-right-color: ${colorStyle.darkGray};
   background-color: ${colorStyle.backgroundColor};
   shadow-color: ${colorStyle.darkGray};
   box-shadow: 0 1px ${colorStyle.darkGray};
+
   padding: 0;
   shadow-opacity: 0.25;
   shadow-radius: 4px;
@@ -33,9 +35,14 @@ const TitleContainer = styled(FlexBox)`
   padding-left: 10px;
 `;
 
-const MsgContainer = styled(FlexBox)`
+const MsgContainer = styled(FlexBox).attrs({
+  justify: "center",
+  direction: "column",
+})`
   padding: 10px;
   min-height: 100px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const IconImg = styled.img`
@@ -45,6 +52,7 @@ const IconImg = styled.img`
 
 //window container => for style
 export const CopyWindow = ({
+  id,
   setWindowVisible,
   setWindowDelete,
   msg,
@@ -70,23 +78,23 @@ export const CopyWindow = ({
         </FlexBox>
         <FlexBox>
           {!isModal && (
-            <HeaderBtn justify="center" onClick={() => setWindowVisible(false)}>
+            <HeaderBtn justify="center" onClick={() => setWindowVisible(id)}>
               <HiMinusSmall size={20} color="black" />
             </HeaderBtn>
           )}
 
-          <HeaderBtn justify="center" onClick={() => setWindowDelete(true)}>
+          <HeaderBtn justify="center" onClick={() => setWindowDelete(id)}>
             <GrFormClose name="close" size={20} color="black" />
           </HeaderBtn>
         </FlexBox>
       </HeaderContainer>
 
       {typeof msg === "string" ? (
-        <MsgContainer direction="column">
+        <MsgContainer>
           <CustomText>{msg}</CustomText>
         </MsgContainer>
       ) : (
-        <>{msg}</>
+        <MsgContainer>{msg}</MsgContainer>
       )}
     </ModalContainer>
   );

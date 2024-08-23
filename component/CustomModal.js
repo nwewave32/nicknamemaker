@@ -5,7 +5,7 @@ import { colorStyle } from "../lib/data/styleData";
 import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
 import styled from "styled-components";
-import { HeaderBtn } from "./GlobalStyles";
+import { HeaderBtn, BorderBox } from "./GlobalStyles";
 
 const CenteredView = styled(FlexBox).attrs({
   justify: "center",
@@ -32,17 +32,13 @@ const ModalView = styled(FlexBox)`
   shadow-radius: 4px;
 `;
 
-const ModalHeader = styled(FlexBox).attrs({
+const ModalHeader = styled(BorderBox).attrs({
   justify: "space-between",
 })`
-  background-color: ${colorStyle.headerColor};
   width: 100%;
   padding-left: 10px;
   box-sizing: border-box;
-  border-style: solid;
   border-width: 1px;
-  border-color: ${colorStyle.white} ${colorStyle.darkGray}
-    ${colorStyle.darkGray} ${colorStyle.white};
 `;
 
 const MsgContainer = styled(FlexBox).attrs({

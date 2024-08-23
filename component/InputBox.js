@@ -1,26 +1,38 @@
 import React from "react";
-
+import moment from "moment";
 import styled from "styled-components";
 import { colorStyle } from "../lib/data/styleData";
 import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
 
+const InputContainer = styled(FlexBox).attrs({
+  justify: "space-between",
+  align: "flex-start",
+})`
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
 const StyledTextInput = styled.input`
-  font-family: "Galmuri";
+  font-family: Galmuri14;
   border-width: 2px;
-  border-bottom-color: ${colorStyle.white};
-  border-right-color: ${colorStyle.white};
-  border-top-color: ${colorStyle.black};
-  border-left-color: ${colorStyle.black};
+  border-color: ${colorStyle.darkGray} ${colorStyle.darkGray}
+    ${colorStyle.white} ${colorStyle.white};
   background-color: ${colorStyle.white};
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-right: 5px;
-  padding-left: 5px;
+  padding-top: 3px 5px;
   outline: none;
   width: 100%;
   caret-color: ${colorStyle.darkGray};
   ${(props) => props.multiline && `height: 150px;`}
+`;
+
+const TitleContainer = styled(FlexBox)`
+  flex: 3;
+  padding-top: 3px;
+`;
+
+const ContentContainer = styled(FlexBox)`
+  flex: 7;
 `;
 
 export const InputBox = ({
@@ -34,41 +46,39 @@ export const InputBox = ({
   placeholder,
   autoFocus,
   inputMode,
+  hasError,
+  errorMsg,
 }) => {
   return (
-    <FlexBox
-      style={{ width: "100%", marginBottom: 10 }}
-      justify="space-between"
-      align="flex-start"
-    >
-      {/* <CustomText style={{ flex: 3, paddingTop: 3 }}>{title}</CustomText> */}
-      <FlexBox style={{ flex: 3, paddingTop: 3 }}>
-        <CustomText>{title}</CustomText>
-        {isRequired && (
-          <CustomText color={colorStyle.headerColor}>{"*"}</CustomText>
-        )}
-      </FlexBox>
+    <>
+      <InputContainer>
+        {/* <CustomText style={{ flex: 3, paddingTop: 3 }}>{title}</CustomText> */}
+        <TitleContainer>
+          <CustomText>{title}</CustomText>
+          {isRequired && (
+            <CustomText color={colorStyle.headerColor}>{"*"}</CustomText>
+          )}
+        </TitleContainer>
 
-      <FlexBox style={{ flex: 7 }}>
-        <StyledTextInput
-          onFocus={onFocus}
-          onBlur={onBlur}
-          textAlignVertical={multiline ? "top" : "center"}
-          onChangeText={changeCallback}
-          value={textValue}
-          multiline={multiline}
-          numberOfLines={multiline ? 4 : 1}
-          disableFullscreenUI={true}
-          returnKeyType={"done"}
-          cursorColor={colorStyle.darkGray}
-          selectionColor={colorStyle.darkGray}
-          placeholderTextColor={colorStyle.darkGray}
-          placeholder={placeholder}
-          scrollEnabled={multiline}
-          keyboardType={inputMode ? inputMode : "default"}
-          autoFocus={autoFocus ? autoFocus : false}
-        />
-      </FlexBox>
-    </FlexBox>
+        <ContentContainer>
+          <StyledTextInput
+            onChange={(e) => changeCallback(e.target.value)}
+            value={textValue}
+            placeholder={placeholder}
+            autoFocus={autoFocus}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            type={inputMode}
+            min="1900-01-01"
+            max={moment().format("YYYY-MM-DD")}
+          />
+        </ContentContainer>
+      </InputContainer>
+      {hasError && (
+        <FlexBox style={{ padding: 5 }}>
+          <CustomText color={colorStyle.warningColor}>{errorMsg}</CustomText>
+        </FlexBox>
+      )}
+    </>
   );
 };

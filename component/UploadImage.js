@@ -15,9 +15,9 @@ export const UploadImage = (props) => {
   };
   return (
     <div className="UploadImage">
-      <img src={uploadImgUrl} img="img" />
+      <img src={uploadImgUrl} img="img" width={50} />
       <label htmlFor="photo">
-        <img src={camera} width={24} />
+        <img src="images/icons/camera_2.png" width={24} />
       </label>
 
       <input

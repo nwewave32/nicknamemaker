@@ -1,20 +1,11 @@
 import React from "react";
 import { HiMinusSmall } from "react-icons/hi2";
 import { GrFormClose } from "react-icons/gr";
-import { HeaderBtn } from "./GlobalStyles";
+import { HeaderBtn, BorderBox } from "./GlobalStyles";
 import styled from "styled-components";
 import { colorStyle } from "../lib/data/styleData";
 import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
-
-export const BorderBox = styled(FlexBox)`
-  background: ${colorStyle.backgroundColor};
-  border-style: solid;
-  border-width: 2px;
-  border-color: ${colorStyle.white} ${colorStyle.darkGray}
-    ${colorStyle.darkGray} ${colorStyle.white};
-  padding: 1px;
-`;
 
 const HeaderContainer = styled(BorderBox)`
   width: 100%;

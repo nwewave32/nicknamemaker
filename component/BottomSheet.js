@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
 import { colorStyle } from "../lib/data/styleData";
 import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
+import { BorderBox, BorderLine, FullContainer } from "./GlobalStyles";
 
 const ModalBackground = styled(FlexBox)`
   width: 100%;
@@ -11,11 +12,44 @@ const ModalBackground = styled(FlexBox)`
   background-color: rgba(0, 0, 0, 0.4);
 `;
 
-export const BottomSheet = ({ btsVisible, setBtsVisible, body, header }) => {
+const BottomSheetContainer = styled(BorderBox).attrs({ direction: "column" })`
+  width: 100%;
+  padding: 10px;
+`;
+
+const ItemContainer = styled(FlexBox)`
+  min-height: 50px;
+  padding-left: 5px;
+  width: 100%;
+`;
+
+Modal.setAppElement("#root");
+
+const customStyles = {
+  content: {
+    bottom: 0,
+    padding: 0,
+    inset: 0,
+    backgroundColor: "transparent",
+    border: "none",
+  },
+  overlay: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    zIndex: 9999,
+  },
+};
+
+export const BottomSheet = ({
+  btsVisible,
+  setBtsVisible,
+  body,
+  header,
+  items,
+  callback,
+}) => {
   return (
     <Modal
-      // animationType="slide"
-      // transparent={true}
+      style={customStyles}
       isOpen={btsVisible}
       onRequestClose={() => {
         alert("BottomSheet has been closed.");
@@ -28,27 +62,32 @@ export const BottomSheet = ({ btsVisible, setBtsVisible, body, header }) => {
           if (btsVisible) setBtsVisible((prev) => !prev);
         }}
       >
-        <FlexBox
-          style={{
-            width: "100%",
-            backgroundColor: colorStyle.backgroundColor,
-            padding: 10,
-            borderTopWidth: 2,
-            borderTopColor: colorStyle.white,
-            borderLeftWidth: 2,
-            borderLeftColor: colorStyle.white,
-            borderBottomWidth: 2,
-            borderBottomColor: colorStyle.darkGray,
-            borderRightWidth: 2,
-            borderRightColor: colorStyle.darkGray,
-          }}
-          direction="column"
-        >
-          <FlexBox style={{ width: "100%", marginBottom: 10 }}>
-            <CustomText>{header}</CustomText>
-          </FlexBox>
-          <FlexBox style={{ width: "100%" }}>{body}</FlexBox>
-        </FlexBox>
+        <BottomSheetContainer>
+          <FullContainer style={{ marginBottom: 10 }}>
+            <CustomText fontWeight="bold" fontSize={12}>
+              {header}
+            </CustomText>
+          </FullContainer>
+          <FullContainer>
+            <FullContainer direction="column">
+              {items.map((item, idx) => {
+                return (
+                  <Fragment key={item + " " + idx}>
+                    <ItemContainer
+                      onClick={() => {
+                        callback(idx);
+                      }}
+                    >
+                      <CustomText>{item}</CustomText>
+                    </ItemContainer>
+
+                    <BorderLine />
+                  </Fragment>
+                );
+              })}
+            </FullContainer>
+          </FullContainer>
+        </BottomSheetContainer>
       </ModalBackground>
     </Modal>
   );
