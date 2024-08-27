@@ -1,0 +1,13 @@
+@import url("https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css");
+
+html,
+body {
+  margin: 0;
+  background-color: #000;
+  font-family: Galmuri14, sans-serif;
+  font-size: 12px;
+}
+
+input {
+  font-family: Galmuri14, sans-serif;
+}
