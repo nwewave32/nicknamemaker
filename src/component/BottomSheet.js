@@ -72,56 +72,31 @@ export const BottomSheet = ({
           <FullContainer>
             <FullContainer direction="column">
               {children
-                ? children.map((item, idx) => (
-                    <Fragment key={item + " " + idx}>
-                      <ItemContainer
-                        onClick={(e) => {
-                          callback(e, idx);
-                        }}
-                      >
-                        <CustomText>{item.title}</CustomText>
-                      </ItemContainer>
-
-                      <BorderLine />
-                    </Fragment>
-                  ))
+                ? children
                 : items?.map((item, idx) => {
                     return (
                       <Fragment key={item.title + " " + idx}>
                         {item.type === "file" ? (
                           <>
                             <label
-                              htmlFor="photo"
+                              htmlFor="idCardPhoto"
                               style={{
                                 width: "100%",
-                                background: "pink",
                                 cursor: "pointer",
                               }}
                             >
                               <ItemContainer
-                                onClick={() => {
-                                  console.log("##??????????");
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                 }}
                               >
                                 <CustomText>{item.title}</CustomText>
                               </ItemContainer>
                             </label>
-                            <input
-                              name="photo"
-                              id="photo"
-                              type="file"
-                              style={{ visibility: "hidden", height: 0 }}
-                              accept="image/*"
-                              onChange={item.onChange}
-                            />
                           </>
                         ) : (
                           <>
-                            <ItemContainer
-                              onClick={(e) => {
-                                callback(e, idx);
-                              }}
-                            >
+                            <ItemContainer onClick={item.onChange}>
                               <CustomText>{item.title}</CustomText>
                             </ItemContainer>
 

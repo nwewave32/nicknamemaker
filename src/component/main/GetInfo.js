@@ -14,6 +14,14 @@ import styled from "styled-components";
 import moment from "moment";
 
 import { FullContainer } from "../GlobalStyles";
+import { useSetRecoilState } from "recoil";
+import { windowsState } from "lib/data/atom";
+import { IdCard } from "./IdCard";
+
+const EmptySpace = styled.div`
+  width: 100px;
+  height: 10px;
+`;
 
 export const GetInfo = ({}) => {
   const [pageIdx, setPageIdx] = useState(0);
@@ -23,7 +31,7 @@ export const GetInfo = ({}) => {
   const [birthdayError, setBirthdayError] = useState("");
   const [photoSrc, setPhotoSrc] = useState("");
   const [nextDisabled, setNextDisabled] = useState(false);
-
+  const setWindows = useSetRecoilState(windowsState);
   const [inputFocused, setInputtFocused] = useState(false); //todo: remove?
 
   useLayoutEffect(() => {
@@ -41,7 +49,7 @@ export const GetInfo = ({}) => {
       value: nameText,
       setFunc: setNameText,
       inputMode: "text",
-      buttonType: "next",
+      buttonType: "Next >",
     },
     {
       id: 1,
@@ -50,7 +58,7 @@ export const GetInfo = ({}) => {
       value: locationText,
       setFunc: setLocationText,
       inputMode: "text",
-      buttonType: "next",
+      buttonType: "Next >",
     },
     {
       id: 2,
@@ -59,14 +67,14 @@ export const GetInfo = ({}) => {
       value: birthdayText,
       setFunc: setBirthdayText,
       inputMode: "date",
-      buttonType: "next",
+      buttonType: "Next >",
     },
     {
       id: 3,
       title: "사진",
       value: photoSrc,
       setFunc: setPhotoSrc,
-      buttonType: "done",
+      buttonType: "OK",
     },
   ];
 
@@ -77,7 +85,8 @@ export const GetInfo = ({}) => {
       (pageIdx === 0 && nameText.trim() === "") ||
       (pageIdx === 1 && locationText.trim() === "") ||
       (pageIdx === 2 && (birthdayText.trim() === "" || !isValidBirth)) ||
-      (pageIdx === 3 && photoSrc === "")
+      (pageIdx === 3 &&
+        (photoSrc === "" || photoSrc === undefined || photoSrc === null))
     )
       setNextDisabled(true);
     else setNextDisabled(false);
@@ -123,29 +132,42 @@ export const GetInfo = ({}) => {
                 {pageItem.id !== 0 && (
                   <>
                     <CustomButton
-                      text="prev"
+                      text="< Back"
                       pressCallback={() => {
                         setPageIdx(idx - 1);
                       }}
                     />
-                    <FlexBox style={{ width: 100, height: 10 }}></FlexBox>
+                    <EmptySpace />
                   </>
                 )}
                 <CustomButton
                   text={pageItem.buttonType}
                   pressCallback={() => {
-                    if (pageItem.buttonType === "done") {
-                      // navigation.navigate("IdCardMain", {
-                      //   name: nameText,
-                      //   // photoIdx: imgManageIdx,
-                      //   photo: photoSrc,
-                      //   location: locationText,
-                      //   birthday: birthdayText, //todo: recoil atom
-                      // });
-                      // setInputWindowDelete(true);
+                    if (pageItem.buttonType === "OK") {
+                      const info = {
+                        name: nameText,
+                        location: locationText,
+                        birthday: birthdayText,
+                        photo: photoSrc,
+                      };
+                      setWindows((prev) => {
+                        const origin = [...prev].filter(
+                          (item) => !item.type.includes("Card")
+                        );
+                        const newWindow = {
+                          id: Date.now(),
+                          type: "IdCard",
+                          visible: true,
+                          title: "Id Card",
+                          icon: "images/icons/justify.png",
+                          msg: <IdCard info={info} />,
+                        };
+                        return [...origin, newWindow];
+                      });
                     } else setPageIdx(idx + 1);
                   }}
                   disabled={nextDisabled}
+                  highlight={pageItem.buttonType === "OK"}
                 />
               </FlexBox>
             </Fragment>

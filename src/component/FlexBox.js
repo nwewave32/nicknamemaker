@@ -14,7 +14,9 @@ const justify = ({ justify }) => {
     : `justify-content: flex-start;`;
 };
 
-const FlexBoxContainer = styled.div`
+const FlexBoxContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["direction"].includes(prop),
+})`
   display: flex;
   position: relative;
   boxsizing: border-box;
@@ -23,9 +25,9 @@ const FlexBoxContainer = styled.div`
   ${justify}
 `;
 
-export const FlexBox = React.forwardRef(({ wrap, children, ...rest }, ref) => {
+export const FlexBox = React.forwardRef(({ children, ...rest }, ref) => {
   return (
-    <FlexBoxContainer ref={ref} {...rest} fwrap={wrap}>
+    <FlexBoxContainer ref={ref} {...rest}>
       {children}
     </FlexBoxContainer>
   );

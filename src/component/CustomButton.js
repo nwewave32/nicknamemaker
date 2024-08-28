@@ -1,36 +1,50 @@
 import React from "react";
-
+import { BorderBox } from "./GlobalStyles";
 import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
 import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
 
-const StyledBox = styled(FlexBox)`
-  border-width: 2px;
-  border-bottom-color: ${colorStyle.darkGray};
-  border-right-color: ${colorStyle.darkGray};
-  border-top-color: ${colorStyle.white};
-  border-left-color: ${colorStyle.white};
-  background-color: ${(props) =>
-    props.disabled ? colorStyle.darkGray : colorStyle.backgroundColor};
-  opacity: ${(props) => (props.disabled ? 0.35 : 1)};
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-right: 5px;
-  padding-left: 5px;
+const StyledBox = styled(BorderBox).attrs({
+  justify: "center",
+})`
+  padding: 3px 5px;
   width: 100%;
+  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 `;
 
-export const CustomButton = ({ text, pressCallback, disabled, ...rest }) => {
+const HighLightBox = styled.div`
+  border: ${(props) =>
+    props.disabled
+      ? `1px dashed ${colorStyle.darkGray}`
+      : `1px dashed ${colorStyle.black}`};
+  width: 100%;
+`;
+export const CustomButton = ({
+  text,
+  pressCallback,
+  disabled,
+  highlight,
+  ...rest
+}) => {
   return (
     <StyledBox
       onClick={pressCallback}
-      disabled={disabled} //disabled click isssue
+      disabled={disabled}
       style={{ ...rest.style }}
     >
-      <CustomText color={disabled ? colorStyle.white : colorStyle.black}>
-        {text}
-      </CustomText>
+      {highlight ? (
+        <HighLightBox disabled={disabled}>
+          <CustomText color={disabled ? colorStyle.darkGray : colorStyle.black}>
+            {text}
+          </CustomText>
+        </HighLightBox>
+      ) : (
+        <CustomText color={disabled ? colorStyle.darkGray : colorStyle.black}>
+          {text}
+        </CustomText>
+      )}
     </StyledBox>
   );
 };

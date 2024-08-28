@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
 import { CopyWindow, CustomText, CustomImg, FlexBox } from "component";
 import { StartMenu } from "component/main/StartMenu";
+import { useRecoilState } from "recoil";
+import { isShowMenuState } from "lib/data/atom";
 
 const ControlBarContainer = styled(FlexBox).attrs({
   align: "flex-start",
@@ -31,10 +33,11 @@ const StartBtn = styled(BorderBox)`
   text-overflow: ellipsis;
   padding: 1px;
   white-space: nowrap;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 `;
 
 export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
-  const [isShowMenu, setIsShowMenu] = useState(false);
+  const [isShowMenu, setIsShowMenu] = useRecoilState(isShowMenuState);
   return (
     <ControlBarContainer>
       <StartBtn
@@ -58,7 +61,7 @@ export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
             toggleWindowVisibility(window.id);
           }}
         >
-          <CustomImg imgSrc={window.icon} width={24} />
+          <CustomImg imgSrc={window.icon} width={24} marginRight={3} />
           <CustomText ellipsizeMode="tail">{window.title}</CustomText>
         </StartBtn>
       ))}

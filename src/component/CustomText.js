@@ -42,6 +42,7 @@ export const CustomText = ({
   color,
   ellipsizeMode,
   textAlign,
+  ...rest
 }) => {
   return (
     <FontDiv
@@ -50,6 +51,7 @@ export const CustomText = ({
       color={color}
       textAlign={textAlign}
       ellipsizeMode={ellipsizeMode}
+      {...rest}
     >
       {children}
     </FontDiv>
