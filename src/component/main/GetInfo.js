@@ -17,6 +17,7 @@ import { FullContainer } from "../GlobalStyles";
 import { useSetRecoilState } from "recoil";
 import { windowsState } from "lib/data/atom";
 import { IdCard } from "./IdCard";
+import { globalUtil } from "lib/util";
 
 const EmptySpace = styled.div`
   width: 100px;
@@ -85,8 +86,7 @@ export const GetInfo = ({}) => {
       (pageIdx === 0 && nameText.trim() === "") ||
       (pageIdx === 1 && locationText.trim() === "") ||
       (pageIdx === 2 && (birthdayText.trim() === "" || !isValidBirth)) ||
-      (pageIdx === 3 &&
-        (photoSrc === "" || photoSrc === undefined || photoSrc === null))
+      (pageIdx === 3 && globalUtil.checkIsNull(photoSrc))
     )
       setNextDisabled(true);
     else setNextDisabled(false);
@@ -123,6 +123,9 @@ export const GetInfo = ({}) => {
 
               {pageItem.id === 3 && (
                 <FullContainer style={{ marginBottom: 20 }}>
+                  {!globalUtil.checkIsNull(photoSrc) && (
+                    <CustomImg imgSrc={photoSrc} width={100} />
+                  )}
                   <UploadImage photoSrc={photoSrc} setPhotoSrc={setPhotoSrc} />
                 </FullContainer>
               )}

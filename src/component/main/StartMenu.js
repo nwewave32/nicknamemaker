@@ -13,6 +13,7 @@ import {
   windowsState,
 } from "lib/data/atom";
 import { GetInfo } from "./GetInfo";
+import { GetInfoMore } from "./GetInfoMore";
 
 const ParentsMenuContainer = styled(BorderBox).attrs({
   direction: "column",
@@ -235,7 +236,7 @@ export const StartMenu = ({ openWindow }) => {
                                         visible: true,
                                         title: "입력해주세요.",
                                         icon: "images/icons/keyboard.png",
-                                        msg: <GetInfo />,
+                                        msg: <GetInfoMore />,
                                       });
                                   } else setModalVisible(true); //10개면 더이상 저장 못한다고
                                 }

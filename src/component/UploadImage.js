@@ -8,6 +8,7 @@ import {
 } from "component";
 import styled from "styled-components";
 import { colorStyle, randomImgList } from "lib/data/styleData";
+import { globalUtil } from "lib/util";
 
 export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
   const [photoIdx, setPhotoIdx] = useState();
@@ -52,21 +53,24 @@ export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
   const [imgManageIdx, setImgManageIdx] = useState(0); //selected idx in bts
 
   useEffect(() => {
-    setPhotoSrc(uploadImgUrl);
+    if (!globalUtil.checkIsNull(uploadImgUrl)) setPhotoSrc(uploadImgUrl);
   }, [uploadImgUrl]);
 
   useEffect(() => {
-    if (imgManageIdx === 0) setPhotoSrc(randomImgList[photoIdx]);
+    if (imgManageIdx === 0 && !globalUtil.checkIsNull(photoIdx))
+      setPhotoSrc(randomImgList[photoIdx]);
   }, [imgManageIdx, photoIdx]);
+
+  const hasImgSrc = useCallback(() => {
+    return (
+      (imgManageIdx === 0 && randomImgList[photoIdx]) ||
+      (imgManageIdx === 1 && uploadImgUrl)
+    );
+  }, [imgManageIdx, photoIdx, uploadImgUrl]);
 
   return (
     <>
       <FullContainer direction="column">
-        <CustomImg
-          imgSrc={imgManageIdx === 0 ? randomImgList[photoIdx] : uploadImgUrl}
-          width={100}
-        />
-
         <FullContainer
           onClick={() => setBtsVisible((prev) => !prev)}
           justify="center"

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
 import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
+import { globalUtil } from "lib/util";
 
 const HeaderContainer = styled(BorderBox)`
   width: 100%;
@@ -18,17 +19,22 @@ const HeaderContainer = styled(BorderBox)`
 const ModalContainer = styled(FlexBox)`
   min-width: 300px;
   max-width: 60%;
+
+  shadow-color: ${colorStyle.darkGray};
+  box-shadow: 0 1px ${colorStyle.darkGray};
+
+  shadow-opacity: 0.25;
+  shadow-radius: 4px;
+  z-index: 10;
+`;
+
+const Container = styled(FlexBox)`
+  width: 100%;
+  border-style: solid;
   border-width: 0 1px 1px 0;
   border-bottom-color: ${colorStyle.darkGray};
   border-right-color: ${colorStyle.darkGray};
   background-color: ${colorStyle.backgroundColor};
-  shadow-color: ${colorStyle.darkGray};
-  box-shadow: 0 1px ${colorStyle.darkGray};
-
-  padding: 0;
-  shadow-opacity: 0.25;
-  shadow-radius: 4px;
-  z-index: 10;
 `;
 
 const TitleContainer = styled(FlexBox)`
@@ -63,39 +69,41 @@ export const CopyWindow = ({
 }) => {
   return (
     <ModalContainer direction="column" style={{ ...rest.style }}>
-      <HeaderContainer justify="space-between">
-        <FlexBox>
-          {icon === null || icon === undefined || icon === "" ? (
-            <TitleContainer>
-              <CustomText color={colorStyle.white}>{title}</CustomText>
-            </TitleContainer>
-          ) : (
-            <FlexBox style={{ minHeight: 24 }}>
-              <IconImg src={icon} width={20} />
-              <CustomText color={colorStyle.white}>{title}</CustomText>
-            </FlexBox>
-          )}
-        </FlexBox>
-        <FlexBox>
-          {!isModal && (
-            <HeaderBtn justify="center" onClick={() => setWindowVisible(id)}>
-              <HiMinusSmall size={20} color="black" />
+      <Container direction="column">
+        <HeaderContainer justify="space-between">
+          <FlexBox>
+            {globalUtil.checkIsNull(icon) ? (
+              <TitleContainer>
+                <CustomText color={colorStyle.white}>{title}</CustomText>
+              </TitleContainer>
+            ) : (
+              <FlexBox style={{ minHeight: 24 }}>
+                <IconImg src={icon} width={20} />
+                <CustomText color={colorStyle.white}>{title}</CustomText>
+              </FlexBox>
+            )}
+          </FlexBox>
+          <FlexBox>
+            {!isModal && (
+              <HeaderBtn justify="center" onClick={() => setWindowVisible(id)}>
+                <HiMinusSmall size={20} color="black" />
+              </HeaderBtn>
+            )}
+
+            <HeaderBtn justify="center" onClick={() => setWindowDelete(id)}>
+              <GrFormClose name="close" size={20} color="black" />
             </HeaderBtn>
-          )}
+          </FlexBox>
+        </HeaderContainer>
 
-          <HeaderBtn justify="center" onClick={() => setWindowDelete(id)}>
-            <GrFormClose name="close" size={20} color="black" />
-          </HeaderBtn>
-        </FlexBox>
-      </HeaderContainer>
-
-      {typeof msg === "string" ? (
-        <MsgContainer>
-          <CustomText>{msg}</CustomText>
-        </MsgContainer>
-      ) : (
-        <MsgContainer>{msg}</MsgContainer>
-      )}
+        {typeof msg === "string" ? (
+          <MsgContainer>
+            <CustomText>{msg}</CustomText>
+          </MsgContainer>
+        ) : (
+          <MsgContainer>{msg}</MsgContainer>
+        )}
+      </Container>
     </ModalContainer>
   );
 };

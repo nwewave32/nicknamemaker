@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-
+import { globalUtil } from "lib/util";
 import { HeaderBtn, BorderBox } from "component/GlobalStyles";
 import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
@@ -61,7 +61,9 @@ export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
             toggleWindowVisibility(window.id);
           }}
         >
-          <CustomImg imgSrc={window.icon} width={24} marginRight={3} />
+          {!globalUtil.checkIsNull(window.icon) && (
+            <CustomImg imgSrc={window.icon} width={24} marginRight={3} />
+          )}
           <CustomText ellipsizeMode="tail">{window.title}</CustomText>
         </StartBtn>
       ))}

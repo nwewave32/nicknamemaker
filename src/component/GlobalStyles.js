@@ -29,3 +29,20 @@ export const HeaderBtn = styled(FlexBox)`
 export const FullContainer = styled(FlexBox)`
   width: 100%;
 `;
+
+export const InputContainer = styled(FlexBox).attrs({
+  justify: "space-between",
+  align: "center",
+})`
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
+export const TitleContainer = styled(FlexBox)`
+  flex: 3;
+  padding-top: 3px;
+`;
+
+export const ContentContainer = styled(FlexBox)`
+  flex: 7;
+`;

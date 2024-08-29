@@ -4,18 +4,21 @@ import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
 import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
-import {
-  InputContainer,
-  TitleContainer,
-  ContentContainer,
-} from "./GlobalStyles";
 
-const StyledTextInput = styled.input`
+const InputContainer = styled(FlexBox).attrs({
+  justify: "space-between",
+  align: "flex-start",
+})`
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
+const StyledInput = styled.input`
   font-family: Galmuri14;
   border-width: 2px;
   border-color: ${colorStyle.darkGray} ${colorStyle.darkGray}
     ${colorStyle.white} ${colorStyle.white};
-  background-color: ${colorStyle.white};
+  background-color: ${colorStyle.backgroundColor};
   padding: 3px 5px;
   outline: none;
   width: 100%;
@@ -23,7 +26,16 @@ const StyledTextInput = styled.input`
   ${(props) => props.multiline && `height: 150px;`}
 `;
 
-export const InputBox = ({
+const TitleContainer = styled(FlexBox)`
+  flex: 3;
+  padding-top: 3px;
+`;
+
+const ContentContainer = styled(FlexBox)`
+  flex: 7;
+`;
+
+export const DatePicker = ({
   title,
   textValue,
   changeCallback,
@@ -49,7 +61,7 @@ export const InputBox = ({
         </TitleContainer>
 
         <ContentContainer>
-          <StyledTextInput
+          <StyledInput
             onChange={(e) => changeCallback(e.target.value)}
             value={textValue}
             placeholder={placeholder}
