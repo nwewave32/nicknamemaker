@@ -21,18 +21,20 @@ const textAlign = ({ textAlign }) => {
 
 const ellipsizeMode = ({ ellipsizeMode }) => {
   return ellipsizeMode === "tail"
-    ? `text-overflow: ellipsis;`
+    ? `text-overflow: ellipsis; white-space:nowrap;overflow: hidden;`
     : `text-overflow: clip;`;
 };
 
 const FontDiv = styled.div.withConfig({
-  shouldForwardProp: (prop) => !["ellipsizeMode"].includes(prop),
+  shouldForwardProp: (prop) =>
+    !["ellipsizeMode", "textAlign", "maxWidth"].includes(prop),
 })`
   ${fontWeight}
   ${fontSize}
   ${color}
   ${textAlign}
   ${ellipsizeMode}
+  max-width: ${(props) => props.maxWidth || "none"};
 `;
 
 export const CustomText = ({
@@ -42,6 +44,7 @@ export const CustomText = ({
   color,
   ellipsizeMode,
   textAlign,
+  maxWidth,
   ...rest
 }) => {
   return (
@@ -51,6 +54,7 @@ export const CustomText = ({
       color={color}
       textAlign={textAlign}
       ellipsizeMode={ellipsizeMode}
+      maxWidth={maxWidth}
       {...rest}
     >
       {children}

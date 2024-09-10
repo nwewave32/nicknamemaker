@@ -4,22 +4,30 @@ import { GrFormClose } from "react-icons/gr";
 import { HeaderBtn, BorderBox } from "./GlobalStyles";
 import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
-import { CustomText } from "./CustomText";
+import { CustomText, CustomImg } from "component";
 import { FlexBox } from "./FlexBox";
 import { globalUtil } from "lib/util";
 
-const HeaderContainer = styled(BorderBox)`
+const StyledHeaderBtn = styled(HeaderBtn)`
+  width: 20px;
+  height: 20px;
+`;
+
+const HeaderContainer = styled(BorderBox).withConfig({
+  shouldForwardProp: (prop) => !["isActive"].includes(prop),
+})`
   width: 100%;
   border-width: 1px;
-  background-color: ${colorStyle.headerColor};
+  background-color: ${(props) =>
+    props.isActive ? colorStyle.headerColor : colorStyle.darkGray};
   padding: 0;
   box-sizing: border-box;
 `;
 
 const ModalContainer = styled(FlexBox)`
   min-width: 300px;
-  max-width: 60%;
 
+  width: min-content;
   shadow-color: ${colorStyle.darkGray};
   box-shadow: 0 1px ${colorStyle.darkGray};
 
@@ -65,12 +73,13 @@ export const CopyWindow = ({
   title,
   icon,
   isModal,
+  isActive,
   ...rest
 }) => {
   return (
     <ModalContainer direction="column" style={{ ...rest.style }}>
       <Container direction="column">
-        <HeaderContainer justify="space-between">
+        <HeaderContainer justify="space-between" isActive={isActive}>
           <FlexBox>
             {globalUtil.checkIsNull(icon) ? (
               <TitleContainer>
@@ -90,9 +99,17 @@ export const CopyWindow = ({
               </HeaderBtn>
             )}
 
-            <HeaderBtn justify="center" onClick={() => setWindowDelete(id)}>
-              <GrFormClose name="close" size={20} color="black" />
-            </HeaderBtn>
+            <StyledHeaderBtn
+              justify="center"
+              align="center"
+              onClick={() => setWindowDelete(id)}
+            >
+              <CustomImg
+                imgSrc="images/icons/close.png"
+                width={14}
+                style={{ cursor: "pointer" }}
+              />
+            </StyledHeaderBtn>
           </FlexBox>
         </HeaderContainer>
 

@@ -22,7 +22,7 @@ const ParentsMenuContainer = styled(BorderBox).attrs({
   min-width: 250px;
   position: absolute;
   top: -254px;
-  z-index: 55;
+  z-index: ${(props) => (props.isShowMenu ? 500 : 55)};
   padding: 0;
 `;
 
@@ -157,7 +157,7 @@ export const StartMenu = ({ openWindow }) => {
 
   return (
     <>
-      <ParentsMenuContainer>
+      <ParentsMenuContainer isShowMenu={isShowMenu}>
         {menuArr.map((menuItem) => {
           return (
             <Fragment key={menuItem.id + menuItem.name}>
@@ -173,6 +173,8 @@ export const StartMenu = ({ openWindow }) => {
                       title: "information",
                       icon: "",
                       msg: <AppInfo />,
+                      zIndex: 10,
+                      isActive: true,
                     }); //child 없는 메뉴는 app info 뿐이라 얘만 일단 넣겠다
                 }}
                 key={menuItem.id + menuItem.name}
@@ -202,7 +204,11 @@ export const StartMenu = ({ openWindow }) => {
 
                 {menuItem.child ? (
                   <>
-                    <MdArrowRight size={24} />
+                    <CustomImg
+                      imgSrc="images/icons/filled_arrow.png"
+                      width={12}
+                      marginRight={8}
+                    />
                     {isShowChildMenu === menuItem.child[0].parents ? (
                       <ChildMenuContainer>
                         {menuItem.child.map((childItem) => {
@@ -222,9 +228,12 @@ export const StartMenu = ({ openWindow }) => {
                                         id: Date.now(),
                                         type: childItem.nav,
                                         visible: true,
-                                        title: "입력해주세요.",
+                                        title:
+                                          "Id Card를 위한 정보를 입력해주세요.",
                                         icon: "images/icons/keyboard.png",
                                         msg: <GetInfo />,
+                                        zIndex: 10,
+                                        isActive: true,
                                       });
                                     else if (
                                       childItem.nav.includes("Name") &&
@@ -234,9 +243,12 @@ export const StartMenu = ({ openWindow }) => {
                                         id: Date.now(),
                                         type: childItem.nav,
                                         visible: true,
-                                        title: "입력해주세요.",
+                                        title:
+                                          "새 이름을 위한 정보를 입력해주세요.",
                                         icon: "images/icons/keyboard.png",
                                         msg: <GetInfoMore />,
+                                        zIndex: 10,
+                                        isActive: true,
                                       });
                                   } else setModalVisible(true); //10개면 더이상 저장 못한다고
                                 }

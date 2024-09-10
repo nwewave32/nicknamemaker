@@ -33,19 +33,43 @@ export default function MainScreen({}) {
         title: "반가워요!",
         icon: "images/icons/hand.png",
         msg: <Intro />,
+        zIndex: 10,
+        isActive: true,
       };
       return [introWindow];
     });
   }, []);
 
+  useEffect(() => {
+    console.log("##windows", windows);
+  }, [windows]);
+
   const openWindow = (newWindow) => {
-    setWindows([...windows, newWindow]);
+    setWindows((prev) => {
+      const originWindows = prev.map((window) => ({
+        ...window,
+        isActive: false,
+      }));
+
+      return [...originWindows, newWindow];
+    });
   };
 
   const toggleWindowVisibility = (id) => {
-    setWindows(
-      windows.map((w) => (w.id === id ? { ...w, visible: !w.visible } : w))
-    );
+    if (id === 0)
+      setWindows(
+        windows.map((w) => {
+          return { ...w, isActive: false };
+        })
+      );
+    else
+      setWindows(
+        windows.map((w) => {
+          if (w.id === id && w.visible) return { ...w, isActive: true };
+          else if (w.id !== id && w.visible) return { ...w, isActive: false };
+          else return { ...w, visible: !w.visible };
+        })
+      );
   };
 
   const closeWindow = (id) => {

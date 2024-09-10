@@ -9,6 +9,7 @@ import {
   TitleContainer,
   ContentContainer,
 } from "./GlobalStyles";
+import { StyledFormContainer } from "./StyledFormContainer";
 
 const StyledTextInput = styled.input`
   font-family: Galmuri14;
@@ -16,11 +17,28 @@ const StyledTextInput = styled.input`
   border-color: ${colorStyle.darkGray} ${colorStyle.darkGray}
     ${colorStyle.white} ${colorStyle.white};
   background-color: ${colorStyle.white};
-  padding: 3px 5px;
+  padding: 2px 5px;
   outline: none;
   width: 100%;
   caret-color: ${colorStyle.darkGray};
-  ${(props) => props.multiline && `height: 150px;`}
+
+  font-size: 12px;
+`;
+
+const StyledTextArea = styled.textarea`
+  font-family: Galmuri14;
+  border-width: 2px;
+  border-color: ${colorStyle.black} ${colorStyle.black} ${colorStyle.white}
+    ${colorStyle.white};
+  background-color: ${colorStyle.white};
+  padding: 2px 5px;
+  outline: none;
+  width: 100%;
+  caret-color: ${colorStyle.darkGray};
+  height: 150px;
+  font-size: 12px;
+  text-align: start;
+  resize: none;
 `;
 
 export const InputBox = ({
@@ -33,22 +51,17 @@ export const InputBox = ({
   onBlur,
   placeholder,
   autoFocus,
-  inputMode,
   hasError,
   errorMsg,
 }) => {
   return (
     <>
-      <InputContainer>
-        {/* <CustomText style={{ flex: 3, paddingTop: 3 }}>{title}</CustomText> */}
-        <TitleContainer>
-          <CustomText>{title}</CustomText>
-          {isRequired && (
-            <CustomText color={colorStyle.headerColor}>{"*"}</CustomText>
-          )}
-        </TitleContainer>
-
-        <ContentContainer>
+      <StyledFormContainer
+        title={title}
+        isRequired={isRequired}
+        align={multiline ? "flex-start" : "center"}
+      >
+        {!multiline ? (
           <StyledTextInput
             onChange={(e) => changeCallback(e.target.value)}
             value={textValue}
@@ -56,12 +69,19 @@ export const InputBox = ({
             autoFocus={autoFocus}
             onFocus={onFocus}
             onBlur={onBlur}
-            type={inputMode}
-            min="1900-01-01"
-            max={moment().format("YYYY-MM-DD")}
           />
-        </ContentContainer>
-      </InputContainer>
+        ) : (
+          <StyledTextArea
+            onChange={(e) => changeCallback(e.target.value)}
+            value={textValue}
+            placeholder={placeholder}
+            autoFocus={autoFocus}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+        )}
+      </StyledFormContainer>
+
       {hasError && (
         <FlexBox style={{ padding: 5 }}>
           <CustomText color={colorStyle.warningColor}>{errorMsg}</CustomText>

@@ -24,6 +24,17 @@ const EmptySpace = styled.div`
   height: 10px;
 `;
 
+const PaddingContainer = styled.div`
+  padding: 10px;
+  min-width: 350px;
+`;
+
+const ButtonArea = styled(FlexBox).attrs({
+  justify: "space-around",
+})`
+  width: 100%;
+`;
+
 export const GetInfo = ({}) => {
   const [pageIdx, setPageIdx] = useState(0);
   const [nameText, setNameText] = useState("");
@@ -46,7 +57,7 @@ export const GetInfo = ({}) => {
     {
       id: 0,
       title: "이름",
-      placeholder: "예)구은재",
+      placeholder: "예) 구은재",
       value: nameText,
       setFunc: setNameText,
       inputMode: "text",
@@ -55,7 +66,7 @@ export const GetInfo = ({}) => {
     {
       id: 1,
       title: "지역",
-      placeholder: "예)동해",
+      placeholder: "예) 동해",
       value: locationText,
       setFunc: setLocationText,
       inputMode: "text",
@@ -64,7 +75,7 @@ export const GetInfo = ({}) => {
     {
       id: 2,
       title: "생일",
-      placeholder: "예)19970324",
+      placeholder: "예) 19970324",
       value: birthdayText,
       setFunc: setBirthdayText,
       inputMode: "date",
@@ -97,7 +108,7 @@ export const GetInfo = ({}) => {
   }, [pageIdx, locationText, nameText, birthdayText, photoSrc]);
 
   return (
-    <>
+    <PaddingContainer>
       {pageArr.map((pageItem, idx) => {
         if (pageIdx === pageItem.id)
           return (
@@ -127,11 +138,12 @@ export const GetInfo = ({}) => {
                     <CustomImg imgSrc={photoSrc} width={100} />
                   )}
                   <UploadImage photoSrc={photoSrc} setPhotoSrc={setPhotoSrc} />
+                  {/* todo: remove bottom sheet */}
                 </FullContainer>
               )}
 
               {/* button area */}
-              <FlexBox>
+              <ButtonArea>
                 {pageItem.id !== 0 && (
                   <>
                     <CustomButton
@@ -140,7 +152,6 @@ export const GetInfo = ({}) => {
                         setPageIdx(idx - 1);
                       }}
                     />
-                    <EmptySpace />
                   </>
                 )}
                 <CustomButton
@@ -164,6 +175,8 @@ export const GetInfo = ({}) => {
                           title: "Id Card",
                           icon: "images/icons/justify.png",
                           msg: <IdCard info={info} />,
+                          zIndex: 10,
+                          isActive: true,
                         };
                         return [...origin, newWindow];
                       });
@@ -172,10 +185,10 @@ export const GetInfo = ({}) => {
                   disabled={nextDisabled}
                   highlight={pageItem.buttonType === "OK"}
                 />
-              </FlexBox>
+              </ButtonArea>
             </Fragment>
           );
       })}
-    </>
+    </PaddingContainer>
   );
 };

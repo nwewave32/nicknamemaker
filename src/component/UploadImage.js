@@ -75,7 +75,11 @@ export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
           onClick={() => setBtsVisible((prev) => !prev)}
           justify="center"
         >
-          <CustomImg imgSrc="images/icons/camera_2.png" width={24} />
+          <CustomImg
+            imgSrc="images/icons/camera_2.png"
+            width={24}
+            style={{ cursor: "pointer" }}
+          />
           <input
             name="idCardPhoto"
             id="idCardPhoto"

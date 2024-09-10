@@ -90,7 +90,6 @@ export const CustomModal = ({ modalVisible, setModalVisible, msg, title }) => {
 
             <HeaderBtn
               onClick={() => {
-                console.log("##??");
                 setModalVisible(!modalVisible);
               }}
             >

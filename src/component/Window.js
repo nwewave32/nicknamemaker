@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { HiMinusSmall } from "react-icons/hi2";
-import { GrFormClose } from "react-icons/gr";
-import { HeaderBtn, BorderBox } from "./GlobalStyles";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
-import { colorStyle } from "lib/data/styleData";
-import { CustomText } from "./CustomText";
 import { CopyWindow } from "./CopyWindow";
+import { useSetRecoilState } from "recoil";
+import { windowsState } from "lib/data/atom";
 
 const WindowContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !["visible"].includes(prop),
 })`
   position: absolute;
   width: 100%;
-
-  padding: 10px;
   visibility: ${(props) => props.visible};
 `;
 
@@ -34,7 +29,7 @@ export const Window = ({ window, toggleVisibility, closeWindow, ...rest }) => {
     const originPosTemp = { ...originPos };
     originPosTemp["x"] = e.target.offsetLeft;
     originPosTemp["y"] = e.target.offsetTop;
-    console.log("originPosTemp", originPosTemp);
+
     setOriginPos(originPosTemp); //드래그 시작할때 드래그 전 위치값을 저장
 
     const clientPosTemp = { ...clientPos };
@@ -81,8 +76,39 @@ export const Window = ({ window, toggleVisibility, closeWindow, ...rest }) => {
     return true;
   };
 
+  const setWindows = useSetRecoilState(windowsState);
+
+  useLayoutEffect(() => {
+    const handleClickOutside = (event) => {
+      if (windowRef.current && windowRef.current.contains(event.target)) {
+        setWindows((prev) => {
+          const originWindows = prev.map((windowItem) => {
+            let active = false;
+
+            if (windowItem.id.toString() === windowRef.current.id)
+              active = true;
+            return {
+              ...windowItem,
+              isActive: active,
+            };
+          });
+
+          return [...originWindows];
+        });
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <WindowContainer
+      id={window.id}
       visible={window.visible ? "visible" : "hidden"}
       ref={windowRef}
       draggable
@@ -90,7 +116,11 @@ export const Window = ({ window, toggleVisibility, closeWindow, ...rest }) => {
       onDrag={(e) => dragHandler(e)}
       onDragOver={(e) => dragOverHandler(e)}
       onDragEnd={(e) => dragEndHandler(e)}
-      style={{ left: pos.left, top: pos.top }}
+      style={{
+        left: pos.left,
+        top: pos.top,
+        zIndex: window.isActive ? 20 : 10,
+      }}
     >
       <CopyWindow
         id={window.id}
@@ -99,6 +129,7 @@ export const Window = ({ window, toggleVisibility, closeWindow, ...rest }) => {
         icon={window.icon}
         setWindowVisible={toggleVisibility}
         setWindowDelete={closeWindow}
+        isActive={window.isActive}
       />
     </WindowContainer>
   );

@@ -3,14 +3,17 @@ import { BorderBox } from "./GlobalStyles";
 import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
 import { CustomText } from "./CustomText";
-import { FlexBox } from "./FlexBox";
 
-const StyledBox = styled(BorderBox).attrs({
-  justify: "center",
-})`
+const StyledBox = styled(BorderBox)
+  .attrs({
+    justify: "center",
+  })
+  .withConfig({
+    shouldForwardProp: (prop) => !["highlight"].includes(prop),
+  })`
   border-width: 1px;
   padding: ${(props) => (props.highlight ? "2px 4px" : "3px 5px")};
-  width: 100%;
+
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 `;

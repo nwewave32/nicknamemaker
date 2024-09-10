@@ -32,7 +32,6 @@ export const FullContainer = styled(FlexBox)`
 
 export const InputContainer = styled(FlexBox).attrs({
   justify: "space-between",
-  align: "center",
 })`
   width: 100%;
   margin-bottom: 10px;

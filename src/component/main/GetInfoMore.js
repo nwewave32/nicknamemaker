@@ -9,6 +9,9 @@ import {
   UploadImage,
   CopyWindow,
   CustomImg,
+  CustomDatePicker,
+  StyledFormContainer,
+  CustomDropDown,
 } from "component";
 import styled from "styled-components";
 import moment from "moment";
@@ -35,6 +38,7 @@ const TabBox = styled(BorderBox).attrs({
   border-bottom: ${(props) =>
     props.selected ? `1px solid ${colorStyle.backgroundColor}` : "none"};
   position: relative;
+  box-sizing: border-box;
 `;
 
 const UnderBar = styled.div`
@@ -49,7 +53,7 @@ const UnderBar = styled.div`
 `;
 
 const ContentsContainer = styled(BorderBox)`
-  width: 100%;
+  min-width: 500px;
   box-sizing: border-box;
   border-width: 1px;
   min-height: 300px;
@@ -73,18 +77,49 @@ const InnerContainer = styled(BorderBox)`
   box-shadow: -1px -1px 1px 1px rgba(0, 0, 0, 0.3);
 `;
 
+const LeftContainer = styled(FlexBox)`
+  flex: 4;
+`;
+
+const RightContainer = styled(FlexBox)`
+  flex: 1;
+`;
+
+const Frame = ({ children, ...rest }) => {
+  return (
+    <OuterContainer>
+      <InnerContainer style={rest.style}>{children}</InnerContainer>
+    </OuterContainer>
+  );
+};
+
 export const GetInfoMore = ({}) => {
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = ["1", "2", "3"];
   const [isDisabled, setIsDisabled] = useState(true);
 
+  // tab1
   const [locationText, setLocationText] = useState("");
-  const [birthdayText, setBirthdayText] = useState("");
+  const [birthdayText, setBirthdayText] = useState(
+    moment().format("YYYY-MM-DD")
+  );
   const [photoSrc, setPhotoSrc] = useState("");
+  // tab2
+  const [bloodType, setBloodType] = useState("");
+  const [zodiac, setZodiac] = useState("");
+  const [prideText, setPrideText] = useState("");
+  //tab3
+  const [vibe, setVibe] = useState(1);
 
   useEffect(() => {
-    console.log("##photoSrc", photoSrc);
-  }, [photoSrc]);
+    if (
+      locationText.trim() === "" ||
+      birthdayText.trim() === "" ||
+      globalUtil.checkIsNull(photoSrc)
+    )
+      setIsDisabled(true);
+    else setIsDisabled(false);
+  }, [locationText, birthdayText, photoSrc]);
 
   return (
     <>
@@ -109,44 +144,102 @@ export const GetInfoMore = ({}) => {
               title="지역"
               changeCallback={setLocationText}
               textValue={locationText}
-              placeholder="예)동해"
+              placeholder="예) 동해"
               inputMode="text"
               autoFocus={true}
+              isRequired={true}
             />
-            <InputBox
+
+            <CustomDatePicker
               title="생일"
               changeCallback={setBirthdayText}
-              textValue={birthdayText}
-              placeholder="예)19970324"
-              inputMode="date"
-              autoFocus={true}
+              dateValue={birthdayText}
+              placeholder="예) 1997-03-24"
+              isRequired={true}
             />
-            <InputContainer>
-              {/* <CustomText style={{ flex: 3, paddingTop: 3 }}>{title}</CustomText> */}
-              <TitleContainer>
-                <CustomText>사진</CustomText>
-              </TitleContainer>
+            <StyledFormContainer title="사진" isRequired={true}>
+              {!globalUtil.checkIsNull(photoSrc) && (
+                <UploadImage photoSrc={photoSrc} setPhotoSrc={setPhotoSrc} />
+              )}
+            </StyledFormContainer>
 
-              <ContentContainer>
-                {!globalUtil.checkIsNull(photoSrc) && (
-                  <UploadImage photoSrc={photoSrc} setPhotoSrc={setPhotoSrc} />
-                )}
-              </ContentContainer>
-            </InputContainer>
-            <OuterContainer>
-              <InnerContainer>
-                {!globalUtil.checkIsNull(photoSrc) ? (
-                  <CustomImg imgSrc={photoSrc} width={100} />
-                ) : (
-                  <UploadImage photoSrc={photoSrc} setPhotoSrc={setPhotoSrc} />
-                )}
-              </InnerContainer>
-            </OuterContainer>
+            <Frame>
+              {" "}
+              {!globalUtil.checkIsNull(photoSrc) ? (
+                <CustomImg imgSrc={photoSrc} width={100} />
+              ) : (
+                <UploadImage photoSrc={photoSrc} setPhotoSrc={setPhotoSrc} />
+              )}
+            </Frame>
           </>
         ) : tabIndex === 1 ? (
-          <>content2</>
+          <>
+            <CustomDropDown
+              title="혈액형"
+              changeCallback={setBloodType}
+              value={bloodType}
+              options={["A", "B", "O", "AB"]}
+            />
+            <CustomDropDown
+              title="별자리"
+              changeCallback={setZodiac}
+              value={zodiac}
+              options={[
+                "양자리",
+                "황소자리",
+                "쌍둥이자리",
+                "게자리",
+                "사자자리",
+                "처녀자리",
+                "천칭자리",
+                "전갈자리",
+                "사수자리",
+                "염소자리",
+                "물병자리",
+                "물고기자리",
+              ]}
+            />
+            <InputBox
+              title="자랑거리"
+              changeCallback={setPrideText}
+              textValue={prideText}
+              placeholder="예) 강아지가 귀여움"
+              inputMode="text"
+              autoFocus={true}
+              multiline={true}
+            />
+          </>
         ) : (
-          <>content3</>
+          <>
+            <FullContainer justify="space-around">
+              <LeftContainer>
+                <Frame
+                  style={{
+                    height: "250px",
+                    width: "180px",
+                    backgroundImage: `url(images/vibes/vibes.00${vibe}.png)`,
+                    backgroundSize: "cover",
+                  }}
+                />
+              </LeftContainer>
+              <RightContainer direction="column">
+                {/* todo: design */}
+                {[1, 2, 3, 4, 5, 6].map((item) => (
+                  <CustomButton
+                    text={item}
+                    pressCallback={() => {
+                      setVibe(item);
+                    }}
+                    style={{
+                      width: "100%",
+                      marginBottom: "10px",
+                      marginRight: "30px",
+                    }}
+                  />
+                ))}
+              </RightContainer>
+            </FullContainer>
+          </>
         )}
       </ContentsContainer>
 

@@ -24,7 +24,14 @@ const ControlBarContainer = styled(FlexBox).attrs({
   box-sizing: border-box;
 `;
 
-const StartBtn = styled(BorderBox)`
+const StartBtn = styled(BorderBox).withConfig({
+  shouldForwardProp: (prop) => !["active"].includes(prop),
+})`
+  border-color: ${(props) =>
+    !props.active ||
+    `${colorStyle.black} ${colorStyle.white} ${colorStyle.white}
+    ${colorStyle.black}`};
+
   margin-right: 5px;
   min-height: 24px;
   min-width: 100px;
@@ -38,6 +45,9 @@ const StartBtn = styled(BorderBox)`
 
 export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
   const [isShowMenu, setIsShowMenu] = useRecoilState(isShowMenuState);
+  useEffect(() => {
+    if (isShowMenu) toggleWindowVisibility(0);
+  }, [isShowMenu]);
   return (
     <ControlBarContainer>
       <StartBtn
@@ -45,6 +55,7 @@ export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
         onClick={() => {
           setIsShowMenu((prev) => !prev);
         }}
+        active={isShowMenu}
       >
         <CustomImg
           imgSrc="images/icons/window_logo.png"
@@ -60,11 +71,14 @@ export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
           onClick={() => {
             toggleWindowVisibility(window.id);
           }}
+          active={window.isActive}
         >
           {!globalUtil.checkIsNull(window.icon) && (
             <CustomImg imgSrc={window.icon} width={24} marginRight={3} />
           )}
-          <CustomText ellipsizeMode="tail">{window.title}</CustomText>
+          <CustomText ellipsizeMode="tail" maxWidth="100px">
+            {window.title}
+          </CustomText>
         </StartBtn>
       ))}
 
