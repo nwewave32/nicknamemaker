@@ -1,6 +1,5 @@
 import React, { useState, useRef, useLayoutEffect, forwardRef } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import "lib/data/calendar.css";
 
 import styled from "styled-components";
 import {

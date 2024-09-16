@@ -35,7 +35,7 @@ const ButtonArea = styled(FlexBox).attrs({
   width: 100%;
 `;
 
-export const GetInfo = ({}) => {
+export const GetInfo = ({ id }) => {
   const [pageIdx, setPageIdx] = useState(0);
   const [nameText, setNameText] = useState("");
   const [locationText, setLocationText] = useState("");
@@ -151,6 +151,7 @@ export const GetInfo = ({}) => {
                       pressCallback={() => {
                         setPageIdx(idx - 1);
                       }}
+                      width="auto"
                     />
                   </>
                 )}
@@ -165,15 +166,13 @@ export const GetInfo = ({}) => {
                         photo: photoSrc,
                       };
                       setWindows((prev) => {
-                        const origin = [...prev].filter(
-                          (item) => !item.type.includes("Card")
-                        );
+                        const origin = prev.filter((w) => w.id !== id);
                         const newWindow = {
                           id: Date.now(),
                           type: "IdCard",
                           visible: true,
-                          title: "Id Card",
-                          icon: "images/icons/justify.png",
+                          title: "New Id Card!",
+                          icon: "images/icons/card.png",
                           msg: <IdCard info={info} />,
                           zIndex: 10,
                           isActive: true,
@@ -182,6 +181,7 @@ export const GetInfo = ({}) => {
                       });
                     } else setPageIdx(idx + 1);
                   }}
+                  width="auto"
                   disabled={nextDisabled}
                   highlight={pageItem.buttonType === "OK"}
                 />

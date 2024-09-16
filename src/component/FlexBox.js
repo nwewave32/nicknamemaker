@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const direction = ({ direction }) => {
   return direction ? `flex-direction: ${direction};` : `flex-direction: row;`;
@@ -42,21 +43,21 @@ FlexBox.defaultProps = {
   // wrap: false,
 };
 
-// FlexBox.propTypes = {
-//   direction: PropTypes.oneOf(["row", "column"]),
-//   align: PropTypes.oneOf([
-//     "flex-start",
-//     "flex-end",
-//     "center",
-//     "stretch",
-//     "baseline",
-//   ]),
-//   justify: PropTypes.oneOf([
-//     "flex-start",
-//     "flex-end",
-//     "center",
-//     "space-around",
-//     "space-between",
-//     "space-evenly",
-//   ]),
-// };
+FlexBox.propTypes = {
+  direction: PropTypes.oneOf(["row", "column"]),
+  align: PropTypes.oneOf([
+    "flex-start",
+    "flex-end",
+    "center",
+    "stretch",
+    "baseline",
+  ]),
+  justify: PropTypes.oneOf([
+    "flex-start",
+    "flex-end",
+    "center",
+    "space-around",
+    "space-between",
+    "space-evenly",
+  ]),
+};

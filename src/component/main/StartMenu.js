@@ -15,10 +15,14 @@ import {
 import { GetInfo } from "./GetInfo";
 import { GetInfoMore } from "./GetInfoMore";
 
-const ParentsMenuContainer = styled(BorderBox).attrs({
-  direction: "column",
-  align: "flex-start",
-})`
+const ParentsMenuContainer = styled(BorderBox)
+  .attrs({
+    direction: "column",
+    align: "flex-start",
+  })
+  .withConfig({
+    shouldForwardProp: (prop) => !["isShowMenu"].includes(prop),
+  })`
   min-width: 250px;
   position: absolute;
   top: -254px;
@@ -217,39 +221,44 @@ export const StartMenu = ({ openWindow }) => {
                               key={childItem.id + childItem.name}
                               onClick={() => {
                                 setIsShowMenu(false);
+
                                 if (!childItem.name.includes("ready")) {
                                   //new 메뉴
+
                                   if (storageData.length < 10) {
                                     if (
                                       childItem.nav.includes("Card") &&
                                       !hasWindow(childItem.nav)
-                                    )
+                                    ) {
+                                      const nowDt = Date.now();
                                       openWindow({
-                                        id: Date.now(),
+                                        id: nowDt,
                                         type: childItem.nav,
                                         visible: true,
                                         title:
                                           "Id Card를 위한 정보를 입력해주세요.",
                                         icon: "images/icons/keyboard.png",
-                                        msg: <GetInfo />,
+                                        msg: <GetInfo id={nowDt} />,
                                         zIndex: 10,
                                         isActive: true,
                                       });
-                                    else if (
+                                    } else if (
                                       childItem.nav.includes("Name") &&
                                       !hasWindow(childItem.nav)
-                                    )
+                                    ) {
+                                      const nowDt = Date.now();
                                       openWindow({
-                                        id: Date.now(),
+                                        id: nowDt,
                                         type: childItem.nav,
                                         visible: true,
                                         title:
                                           "새 이름을 위한 정보를 입력해주세요.",
                                         icon: "images/icons/keyboard.png",
-                                        msg: <GetInfoMore />,
+                                        msg: <GetInfoMore id={nowDt} />,
                                         zIndex: 10,
                                         isActive: true,
                                       });
+                                    }
                                   } else setModalVisible(true); //10개면 더이상 저장 못한다고
                                 }
                               }}
@@ -282,17 +291,8 @@ export const StartMenu = ({ openWindow }) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         msg="이름은 최대 10개 까지만 만들 수 있어요. 다른 이름을 생성하고 싶다면 폴더를 삭제해주세요."
-        title={
-          <FlexBox>
-            <CustomImg
-              imgSrc="images/icons/warning.png"
-              width={22}
-              marginRight={3}
-            />
-
-            <CustomText color={colorStyle.white}>Error!</CustomText>
-          </FlexBox>
-        }
+        icon="images/icons/warning.png"
+        title="Error!"
       />
     </>
   );

@@ -7,7 +7,6 @@ import {
   ContentContainer,
   TitleContainer,
 } from "./GlobalStyles";
-import "lib/data/calendar.css";
 
 export const StyledFormContainer = ({ title, isRequired, children, align }) => {
   return (

@@ -10,7 +10,7 @@ export const Intro = ({}) => {
         Start &gt; New &gt; Name
       </CustomText>
 
-      <CustomText>새 신분증을 원할 경우</CustomText>
+      <CustomText>새 ID Card를 원할 경우</CustomText>
       <CustomText fontSize={11} fontWeight="bold">
         Start &gt; New &gt; ID Card
       </CustomText>

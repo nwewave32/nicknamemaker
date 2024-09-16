@@ -1,11 +1,11 @@
 import nameList from "../nameCollection.json";
 
 const MakeNameUtil = () => {
-  const makeNameFuncMain = (lastName, middleName, vibe) => {
+  const makeNameFuncMain = (middleName, vibe) => {
     let result = {
       first: getName(nameList.firstName[vibe]),
       middle: middleName ? getName(nameList.middleName) : false,
-      last: lastName ? lastName : getName(nameList.lastName),
+      last: getName(nameList.lastName),
     };
 
     return result;

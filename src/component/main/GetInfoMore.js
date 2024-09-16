@@ -27,6 +27,7 @@ import { useSetRecoilState } from "recoil";
 import { windowsState } from "lib/data/atom";
 import { IdCard } from "./IdCard";
 import { globalUtil } from "lib/util";
+import { NewName } from "./\bNewName";
 
 const TabBox = styled(BorderBox).attrs({
   justify: "center",
@@ -93,10 +94,11 @@ const Frame = ({ children, ...rest }) => {
   );
 };
 
-export const GetInfoMore = ({}) => {
+export const GetInfoMore = ({ id }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = ["1", "2", "3"];
   const [isDisabled, setIsDisabled] = useState(true);
+  const setWindows = useSetRecoilState(windowsState);
 
   // tab1
   const [locationText, setLocationText] = useState("");
@@ -110,6 +112,16 @@ export const GetInfoMore = ({}) => {
   const [prideText, setPrideText] = useState("");
   //tab3
   const [vibe, setVibe] = useState(1);
+  const vibeArr = [
+    "white",
+    "pink",
+    "black",
+    "yellow",
+    "brown",
+    "blue",
+    "green",
+    "purple",
+  ];
 
   useEffect(() => {
     if (
@@ -224,17 +236,14 @@ export const GetInfoMore = ({}) => {
               </LeftContainer>
               <RightContainer direction="column">
                 {/* todo: design */}
-                {[1, 2, 3, 4, 5, 6].map((item) => (
+                {vibeArr.map((item, idx) => (
                   <CustomButton
-                    text={item}
+                    key={item}
+                    text={idx + 1}
                     pressCallback={() => {
-                      setVibe(item);
+                      setVibe(idx + 1);
                     }}
-                    style={{
-                      width: "100%",
-                      marginBottom: "10px",
-                      marginRight: "30px",
-                    }}
+                    margin={{ bottom: "10px", right: "30px" }}
                   />
                 ))}
               </RightContainer>
@@ -247,18 +256,44 @@ export const GetInfoMore = ({}) => {
         <CustomButton
           text="Apply"
           pressCallback={() => {
-            console.log("##apply");
+            const info = {
+              location: locationText,
+              birthday: birthdayText,
+              photo: photoSrc,
+              bloodType: bloodType,
+              zodiac: zodiac,
+              pride: prideText,
+              vibe: {
+                id: vibe,
+                name: vibeArr[vibe - 1],
+              },
+            };
+            setWindows((prev) => {
+              const origin = prev.filter((w) => w.id !== id);
+              const newWindow = {
+                id: Date.now(),
+                type: "Name",
+                visible: true,
+                title: "New Name!",
+                icon: "images/icons/user_32.png",
+                msg: <NewName info={info} />,
+                zIndex: 10,
+                isActive: true,
+              };
+              return [...origin, newWindow];
+            });
           }}
           disabled={isDisabled}
           highlight={true}
-          style={{ width: "20%", marginRight: "5px" }}
+          width="20%"
+          margin={{ right: "5px" }}
         />
         <CustomButton
           text="Cancel"
           pressCallback={() => {
-            console.log("##cancel");
+            setWindows((prev) => prev.filter((w) => w.id !== id));
           }}
-          style={{ width: "20%" }}
+          width="20%"
         />
       </FullContainer>
     </>

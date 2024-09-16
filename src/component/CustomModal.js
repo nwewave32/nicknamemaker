@@ -6,6 +6,7 @@ import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
 import styled from "styled-components";
 import { HeaderBtn, BorderBox } from "./GlobalStyles";
+import { CopyWindow } from "./CopyWindow";
 
 const CenteredView = styled(FlexBox).attrs({
   justify: "center",
@@ -69,7 +70,13 @@ const customStyles = {
   },
 };
 
-export const CustomModal = ({ modalVisible, setModalVisible, msg, title }) => {
+export const CustomModal = ({
+  modalVisible,
+  setModalVisible,
+  msg,
+  title,
+  icon,
+}) => {
   return (
     <Modal
       isOpen={modalVisible}
@@ -81,7 +88,15 @@ export const CustomModal = ({ modalVisible, setModalVisible, msg, title }) => {
     >
       <CenteredView>
         <ModalView direction="column">
-          <ModalHeader>
+          <CopyWindow
+            title={title}
+            msg={msg}
+            icon={icon}
+            isModal={true}
+            isActive={true}
+            setWindowDelete={setModalVisible}
+          />
+          {/* <ModalHeader>
             {typeof title === "string" ? (
               <CustomText color={colorStyle.white}>{title}</CustomText>
             ) : (
@@ -103,7 +118,7 @@ export const CustomModal = ({ modalVisible, setModalVisible, msg, title }) => {
             ) : (
               <FlexBox>{msg}</FlexBox>
             )}
-          </MsgContainer>
+          </MsgContainer> */}
         </ModalView>
       </CenteredView>
     </Modal>

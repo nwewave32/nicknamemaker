@@ -73,7 +73,9 @@ export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
           }}
           active={window.isActive}
         >
-          {!globalUtil.checkIsNull(window.icon) && (
+          {globalUtil.checkIsNull(window.icon) ? (
+            <CustomImg width={24} marginRight={3} />
+          ) : (
             <CustomImg imgSrc={window.icon} width={24} marginRight={3} />
           )}
           <CustomText ellipsizeMode="tail" maxWidth="100px">

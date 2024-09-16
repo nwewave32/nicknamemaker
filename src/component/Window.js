@@ -8,7 +8,7 @@ const WindowContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !["visible"].includes(prop),
 })`
   position: absolute;
-  width: 100%;
+
   visibility: ${(props) => props.visible};
 `;
 

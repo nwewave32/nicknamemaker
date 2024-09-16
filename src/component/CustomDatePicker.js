@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "lib/data/calendar.css";
+import "lib/data/css/calendar.css";
 import { StyledFormContainer } from "./StyledFormContainer";
 
 export const CustomDatePicker = ({
