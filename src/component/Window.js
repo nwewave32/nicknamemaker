@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 import { CopyWindow } from "./CopyWindow";
 import { useSetRecoilState } from "recoil";
-import { windowsState } from "lib/data/atom";
+import { windowsState, closeWindowSelector } from "lib/data/atom";
 
 const WindowContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !["visible"].includes(prop),
@@ -13,7 +13,8 @@ const WindowContainer = styled.div.withConfig({
 `;
 
 //real window with function
-export const Window = ({ window, toggleVisibility, closeWindow, ...rest }) => {
+export const Window = ({ window, toggleVisibility, ...rest }) => {
+  const closeWindow = useSetRecoilState(closeWindowSelector);
   const windowRef = useRef(null);
   const [originPos, setOriginPos] = useState({ x: 0, y: 0 }); // 드래그 전 포지션값 (e.target.offset의 상대 위치)
   const [clientPos, setClientPos] = useState({ x: 0, y: 0 }); // 실시간 커서위치인 e.client를 갱신하는값

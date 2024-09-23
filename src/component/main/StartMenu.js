@@ -2,18 +2,16 @@ import React, { useEffect, useState, Fragment } from "react";
 import styled from "styled-components";
 import { FlexBox, CustomText, CustomModal, CustomImg } from "component";
 import { BorderBox, BorderLine } from "component/GlobalStyles";
-import { AppInfo } from "component/main/AppInfo";
+import { AppInfo, GetInfo, GetInfoMore } from "component/windows";
 import { MdArrowRight } from "react-icons/md";
 import { colorStyle, randomImgList } from "lib/data/styleData";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import {
-  needUpdateState,
+  openWindowSelector,
   storageListState,
   isShowMenuState,
   windowsState,
 } from "lib/data/atom";
-import { GetInfo } from "./GetInfo";
-import { GetInfoMore } from "./GetInfoMore";
 
 const ParentsMenuContainer = styled(BorderBox)
   .attrs({
@@ -66,12 +64,13 @@ const ChildMenuItem = styled(FlexBox).attrs({
   padding-right: 5px;
 `;
 
-export const StartMenu = ({ openWindow }) => {
+export const StartMenu = () => {
   const [isShowMenu, setIsShowMenu] = useRecoilState(isShowMenuState);
   const [isShowChildMenu, setIsShowChildMenu] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const storageData = useRecoilValue(storageListState);
-  const windows = useRecoilValue(windowsState);
+
+  const openWindow = useSetRecoilState(openWindowSelector);
 
   const menuArr = [
     {
@@ -147,18 +146,6 @@ export const StartMenu = ({ openWindow }) => {
     if (!isShowMenu) setIsShowChildMenu(""); // 부모 사라지면 자식도 같이 사라짐
   }, [isShowMenu]);
 
-  const hasWindow = (type) => {
-    let hasWindow = false;
-    for (let index = 0; index < windows.length; index++) {
-      const window = windows[index];
-      if (window.type === type) {
-        hasWindow = true;
-        //todo: increasee zindex
-      }
-    }
-    return hasWindow;
-  };
-
   return (
     <>
       <ParentsMenuContainer isShowMenu={isShowMenu}>
@@ -226,10 +213,7 @@ export const StartMenu = ({ openWindow }) => {
                                   //new 메뉴
 
                                   if (storageData.length < 10) {
-                                    if (
-                                      childItem.nav.includes("Card") &&
-                                      !hasWindow(childItem.nav)
-                                    ) {
+                                    if (childItem.nav.includes("Card")) {
                                       const nowDt = Date.now();
                                       openWindow({
                                         id: nowDt,
@@ -242,10 +226,7 @@ export const StartMenu = ({ openWindow }) => {
                                         zIndex: 10,
                                         isActive: true,
                                       });
-                                    } else if (
-                                      childItem.nav.includes("Name") &&
-                                      !hasWindow(childItem.nav)
-                                    ) {
+                                    } else if (childItem.nav.includes("Name")) {
                                       const nowDt = Date.now();
                                       openWindow({
                                         id: nowDt,

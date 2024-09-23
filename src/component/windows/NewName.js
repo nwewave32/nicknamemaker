@@ -1,9 +1,6 @@
 import React, { useLayoutEffect, useState, useEffect } from "react";
 
 import {
-  FlexBox,
-  CustomText,
-  WindowBox,
   CustomButton,
   FullContainer,
   SlowImageReveal,
@@ -12,19 +9,24 @@ import {
 } from "component";
 import { globalUtil, makeNameUtil } from "lib/util";
 import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
+import { closeWindowSelector, openWindowSelector } from "lib/data/atom";
+import { IdCard } from "./IdCard";
 
 const FullWithMargin = styled(FullContainer)`
   margin-top: 10px;
   margin-bottom: 10px;
 `;
 
-export const NewName = ({ info }) => {
+export const NewName = ({ id, info }) => {
   const [newName, setNewName] = useState("");
   const [isShowBtns, setIsShowBtns] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMsg, setToastMsg] = useState(false);
 
+  const openWindow = useSetRecoilState(openWindowSelector);
+  const closeWindow = useSetRecoilState(closeWindowSelector);
   const nowUrl = window.location.href;
 
   function shareUrl() {
@@ -163,7 +165,30 @@ export const NewName = ({ info }) => {
             <CustomButton
               text="Id Card"
               highlight={true}
-              pressCallback={() => {}}
+              pressCallback={() => {
+                const infoProps = {
+                  name: newName,
+                  location: info.location,
+                  birthday: info.birthday,
+                  photo: info.photo,
+                  bloodType: info.bloodType,
+                  zodiac: info.zodiac,
+                  pride: info.pride,
+                  vibe: info.vibe.name,
+                };
+                console.log("##idasdf", id);
+                closeWindow(id);
+                openWindow({
+                  id: Date.now(),
+                  type: "IdCard",
+                  visible: true,
+                  title: "New Id Card!",
+                  icon: "images/icons/card.png",
+                  msg: <IdCard info={infoProps} />,
+                  zIndex: 10,
+                  isActive: true,
+                });
+              }}
             />
           </FullWithMargin>
         )}
@@ -208,11 +233,13 @@ export const NewName = ({ info }) => {
         icon="images/icons/tree_16.png"
         title="Share"
       />
-      <CustomToast
-        toastVisible={toastVisible}
-        setToastVisible={setToastVisible}
-        msg={toastMsg}
-      />
+      {toastVisible && (
+        <CustomToast
+          toastVisible={toastVisible}
+          setToastVisible={setToastVisible}
+          msg={toastMsg}
+        />
+      )}
     </>
   );
 };

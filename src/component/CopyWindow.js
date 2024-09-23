@@ -102,7 +102,11 @@ export const CopyWindow = ({
             <StyledHeaderBtn
               justify="center"
               align="center"
-              onClick={() => setWindowDelete(id)}
+              onClick={() => {
+                if (globalUtil.checkIsNull(id))
+                  setWindowDelete((prev) => !prev);
+                else setWindowDelete(id);
+              }}
             >
               <CustomImg
                 imgSrc="images/icons/close.png"

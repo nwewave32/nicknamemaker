@@ -24,10 +24,14 @@ import {
 } from "component/GlobalStyles";
 
 import { useSetRecoilState } from "recoil";
-import { windowsState } from "lib/data/atom";
-import { IdCard } from "./IdCard";
+import {
+  windowsState,
+  closeWindowSelector,
+  openWindowSelector,
+} from "lib/data/atom";
+
 import { globalUtil } from "lib/util";
-import { NewName } from "./\bNewName";
+import { NewName } from "component/windows";
 
 const TabBox = styled(BorderBox).attrs({
   justify: "center",
@@ -98,8 +102,9 @@ export const GetInfoMore = ({ id }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = ["1", "2", "3"];
   const [isDisabled, setIsDisabled] = useState(true);
-  const setWindows = useSetRecoilState(windowsState);
 
+  const openWindow = useSetRecoilState(openWindowSelector);
+  const closeWindow = useSetRecoilState(closeWindowSelector);
   // tab1
   const [locationText, setLocationText] = useState("");
   const [birthdayText, setBirthdayText] = useState(
@@ -127,11 +132,12 @@ export const GetInfoMore = ({ id }) => {
     if (
       locationText.trim() === "" ||
       birthdayText.trim() === "" ||
-      globalUtil.checkIsNull(photoSrc)
+      globalUtil.checkIsNull(photoSrc) ||
+      prideText.length > 50
     )
       setIsDisabled(true);
     else setIsDisabled(false);
-  }, [locationText, birthdayText, photoSrc]);
+  }, [locationText, birthdayText, photoSrc, prideText]);
 
   return (
     <>
@@ -176,7 +182,6 @@ export const GetInfoMore = ({ id }) => {
             </StyledFormContainer>
 
             <Frame>
-              {" "}
               {!globalUtil.checkIsNull(photoSrc) ? (
                 <CustomImg imgSrc={photoSrc} width={100} />
               ) : (
@@ -215,10 +220,12 @@ export const GetInfoMore = ({ id }) => {
               title="자랑거리"
               changeCallback={setPrideText}
               textValue={prideText}
-              placeholder="예) 강아지가 귀여움"
+              placeholder="예) 강아지가 귀여움 (50자 이하)"
               inputMode="text"
               autoFocus={true}
               multiline={true}
+              hasError={prideText.length > 50}
+              errorMsg="글자수가 너무 많아요!"
             />
           </>
         ) : (
@@ -239,7 +246,7 @@ export const GetInfoMore = ({ id }) => {
                 {vibeArr.map((item, idx) => (
                   <CustomButton
                     key={item}
-                    text={idx + 1}
+                    text={(idx + 1).toString()}
                     pressCallback={() => {
                       setVibe(idx + 1);
                     }}
@@ -268,19 +275,17 @@ export const GetInfoMore = ({ id }) => {
                 name: vibeArr[vibe - 1],
               },
             };
-            setWindows((prev) => {
-              const origin = prev.filter((w) => w.id !== id);
-              const newWindow = {
-                id: Date.now(),
-                type: "Name",
-                visible: true,
-                title: "New Name!",
-                icon: "images/icons/user_32.png",
-                msg: <NewName info={info} />,
-                zIndex: 10,
-                isActive: true,
-              };
-              return [...origin, newWindow];
+            closeWindow(id);
+            const nowDt = Date.now();
+            openWindow({
+              id: nowDt,
+              type: "Name",
+              visible: true,
+              title: "New Name!",
+              icon: "images/icons/user_32.png",
+              msg: <NewName id={nowDt} info={info} />,
+              zIndex: 10,
+              isActive: true,
             });
           }}
           disabled={isDisabled}
@@ -291,7 +296,7 @@ export const GetInfoMore = ({ id }) => {
         <CustomButton
           text="Cancel"
           pressCallback={() => {
-            setWindows((prev) => prev.filter((w) => w.id !== id));
+            closeWindow(id);
           }}
           width="20%"
         />

@@ -1,4 +1,7 @@
 @import url("https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@100..900&display=swap");
 
 html,
 body {
@@ -10,4 +13,12 @@ body {
 
 input {
   font-family: Galmuri14, sans-serif;
+}
+
+@font-face {
+  font-family: "YoonChildfundkoreaManSeh";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/YoonChildfundkoreaManSeh.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }

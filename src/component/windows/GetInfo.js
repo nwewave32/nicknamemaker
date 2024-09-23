@@ -15,8 +15,8 @@ import moment from "moment";
 
 import { FullContainer } from "../GlobalStyles";
 import { useSetRecoilState } from "recoil";
-import { windowsState } from "lib/data/atom";
-import { IdCard } from "./IdCard";
+import { closeWindowSelector, openWindowSelector } from "lib/data/atom";
+import { IdCard } from "component/windows";
 import { globalUtil } from "lib/util";
 
 const EmptySpace = styled.div`
@@ -43,9 +43,10 @@ export const GetInfo = ({ id }) => {
   const [birthdayError, setBirthdayError] = useState("");
   const [photoSrc, setPhotoSrc] = useState("");
   const [nextDisabled, setNextDisabled] = useState(false);
-  const setWindows = useSetRecoilState(windowsState);
-  const [inputFocused, setInputtFocused] = useState(false); //todo: remove?
 
+  const [inputFocused, setInputtFocused] = useState(false); //todo: remove?
+  const openWindow = useSetRecoilState(openWindowSelector);
+  const closeWindow = useSetRecoilState(closeWindowSelector);
   useLayoutEffect(() => {
     setBirthdayText(() => {
       const today = moment().format("YYYY-MM-DD");
@@ -165,19 +166,16 @@ export const GetInfo = ({ id }) => {
                         birthday: birthdayText,
                         photo: photoSrc,
                       };
-                      setWindows((prev) => {
-                        const origin = prev.filter((w) => w.id !== id);
-                        const newWindow = {
-                          id: Date.now(),
-                          type: "IdCard",
-                          visible: true,
-                          title: "New Id Card!",
-                          icon: "images/icons/card.png",
-                          msg: <IdCard info={info} />,
-                          zIndex: 10,
-                          isActive: true,
-                        };
-                        return [...origin, newWindow];
+                      closeWindow(id);
+                      openWindow({
+                        id: Date.now(),
+                        type: "IdCard",
+                        visible: true,
+                        title: "New Id Card!",
+                        icon: "images/icons/card.png",
+                        msg: <IdCard info={info} />,
+                        zIndex: 10,
+                        isActive: true,
                       });
                     } else setPageIdx(idx + 1);
                   }}

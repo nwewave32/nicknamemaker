@@ -3,7 +3,7 @@ import {
   BottomSheet,
   CustomImg,
   FlexBox,
-  FullContainer,
+  FullFullContainer,
   CustomText,
 } from "component";
 import styled from "styled-components";
@@ -70,10 +70,11 @@ export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
 
   return (
     <>
-      <FullContainer direction="column">
-        <FullContainer
+      <FullFullContainer direction="column">
+        <FullFullContainer
           onClick={() => setBtsVisible((prev) => !prev)}
           justify="center"
+          id="rtrt"
         >
           <CustomImg
             imgSrc="images/icons/camera_2.png"
@@ -92,8 +93,8 @@ export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
               onchangeImageUpload(e);
             }}
           />
-        </FullContainer>
-      </FullContainer>
+        </FullFullContainer>
+      </FullFullContainer>
       <BottomSheet
         btsVisible={btsVisible}
         setBtsVisible={setBtsVisible}

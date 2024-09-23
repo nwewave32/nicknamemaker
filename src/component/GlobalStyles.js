@@ -30,6 +30,11 @@ export const FullContainer = styled(FlexBox)`
   width: 100%;
 `;
 
+export const FullFullContainer = styled(FlexBox)`
+  width: 100%;
+  height: 100%;
+`;
+
 export const InputContainer = styled(FlexBox).attrs({
   justify: "space-between",
 })`

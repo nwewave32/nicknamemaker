@@ -43,7 +43,7 @@ const StartBtn = styled(BorderBox).withConfig({
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 `;
 
-export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
+export const ControlBar = ({ toggleWindowVisibility, windows }) => {
   const [isShowMenu, setIsShowMenu] = useRecoilState(isShowMenuState);
   useEffect(() => {
     if (isShowMenu) toggleWindowVisibility(0);
@@ -84,11 +84,7 @@ export const ControlBar = ({ toggleWindowVisibility, windows, openWindow }) => {
         </StartBtn>
       ))}
 
-      {isShowMenu ? (
-        <StartMenu isShowMenu={isShowMenu} openWindow={openWindow} />
-      ) : (
-        <></>
-      )}
+      {isShowMenu ? <StartMenu /> : <></>}
     </ControlBarContainer>
   );
 };

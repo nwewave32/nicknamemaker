@@ -36,7 +36,7 @@ export const CustomToast = ({ toastVisible, setToastVisible, msg }) => {
     <Modal
       isOpen={toastVisible}
       onRequestClose={() => {
-        setToastVisible((prev) => !prev);
+        // setToastVisible((prev) => !prev);
       }}
       closeTimeoutMS={2000}
       preventScroll={true}
