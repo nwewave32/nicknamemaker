@@ -20,7 +20,7 @@ const FlexBoxContainer = styled.div.withConfig({
 })`
   display: flex;
   position: relative;
-  boxsizing: border-box;
+  box-sizing: border-box;
   ${direction}
   ${align}
   ${justify}

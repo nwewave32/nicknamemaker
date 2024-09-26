@@ -31,6 +31,7 @@ export const FullContainer = styled(FlexBox)`
 `;
 
 export const FullFullContainer = styled(FlexBox)`
+  flex: 1;
   width: 100%;
   height: 100%;
 `;

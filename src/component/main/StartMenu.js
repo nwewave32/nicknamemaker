@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, forwardRef } from "react";
 import styled from "styled-components";
 import { FlexBox, CustomText, CustomModal, CustomImg } from "component";
 import { BorderBox, BorderLine } from "component/GlobalStyles";
@@ -62,9 +62,10 @@ const ChildMenuItem = styled(FlexBox).attrs({
   position: relative;
   z-index: 15;
   padding-right: 5px;
+  width: 100%;
 `;
 
-export const StartMenu = () => {
+export const StartMenu = forwardRef((props, ref) => {
   const [isShowMenu, setIsShowMenu] = useRecoilState(isShowMenuState);
   const [isShowChildMenu, setIsShowChildMenu] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -148,7 +149,7 @@ export const StartMenu = () => {
 
   return (
     <>
-      <ParentsMenuContainer isShowMenu={isShowMenu}>
+      <ParentsMenuContainer isShowMenu={isShowMenu} ref={ref}>
         {menuArr.map((menuItem) => {
           return (
             <Fragment key={menuItem.id + menuItem.name}>
@@ -222,7 +223,12 @@ export const StartMenu = () => {
                                         title:
                                           "Id Card를 위한 정보를 입력해주세요.",
                                         icon: "images/icons/keyboard.png",
-                                        msg: <GetInfo id={nowDt} />,
+                                        msg: (
+                                          <GetInfoMore
+                                            id={nowDt}
+                                            forCard={true}
+                                          />
+                                        ),
                                         zIndex: 10,
                                         isActive: true,
                                       });
@@ -277,4 +283,4 @@ export const StartMenu = () => {
       />
     </>
   );
-};
+});

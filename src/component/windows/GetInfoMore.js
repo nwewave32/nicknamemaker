@@ -2,12 +2,11 @@ import React, { useEffect, useState, Fragment, useLayoutEffect } from "react";
 import { colorStyle, randomImgList } from "lib/data/styleData";
 import {
   FlexBox,
-  BottomSheet,
   CustomText,
   CustomButton,
   InputBox,
   UploadImage,
-  CopyWindow,
+  WindowBox,
   CustomImg,
   CustomDatePicker,
   StyledFormContainer,
@@ -31,7 +30,8 @@ import {
 } from "lib/data/atom";
 
 import { globalUtil } from "lib/util";
-import { NewName } from "component/windows";
+import { NewName, IdCard } from "component/windows";
+import { zodiac as zodiacConst } from "lib/data/constant";
 
 const TabBox = styled(BorderBox).attrs({
   justify: "center",
@@ -77,9 +77,10 @@ const InnerContainer = styled(BorderBox)`
   border-width: 1px;
   border-color: ${colorStyle.black} ${colorStyle.white} ${colorStyle.white}
     ${colorStyle.black};
-  min-height: 80px;
-  min-width: 100px;
+  height: 100px;
+  width: 100px;
   box-shadow: -1px -1px 1px 1px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 `;
 
 const LeftContainer = styled(FlexBox)`
@@ -98,7 +99,7 @@ const Frame = ({ children, ...rest }) => {
   );
 };
 
-export const GetInfoMore = ({ id }) => {
+export const GetInfoMore = ({ id, forCard = false }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = ["1", "2", "3"];
   const [isDisabled, setIsDisabled] = useState(true);
@@ -106,6 +107,7 @@ export const GetInfoMore = ({ id }) => {
   const openWindow = useSetRecoilState(openWindowSelector);
   const closeWindow = useSetRecoilState(closeWindowSelector);
   // tab1
+  const [nameText, setNameText] = useState("");
   const [locationText, setLocationText] = useState("");
   const [birthdayText, setBirthdayText] = useState(
     moment().format("YYYY-MM-DD")
@@ -127,17 +129,29 @@ export const GetInfoMore = ({ id }) => {
     "green",
     "purple",
   ];
-
+  const zodiacArr = zodiacConst.map((item) => item.name);
   useEffect(() => {
     if (
+      (forCard && nameText.trim() === "") ||
       locationText.trim() === "" ||
       birthdayText.trim() === "" ||
       globalUtil.checkIsNull(photoSrc) ||
-      prideText.length > 50
+      prideText.length > 50 ||
+      globalUtil.checkIsNull(bloodType) ||
+      globalUtil.checkIsNull(zodiac) ||
+      prideText.trim() === ""
     )
       setIsDisabled(true);
     else setIsDisabled(false);
-  }, [locationText, birthdayText, photoSrc, prideText]);
+  }, [
+    nameText,
+    locationText,
+    birthdayText,
+    photoSrc,
+    prideText,
+    bloodType,
+    zodiac,
+  ]);
 
   return (
     <>
@@ -158,14 +172,29 @@ export const GetInfoMore = ({ id }) => {
       <ContentsContainer direction="column">
         {tabIndex === 0 ? (
           <>
+            {forCard && (
+              <InputBox
+                title="이름"
+                changeCallback={setNameText}
+                textValue={nameText}
+                placeholder="예) 구은재"
+                inputMode="text"
+                autoFocus={true}
+                isRequired={true}
+                hasError={nameText.length > 10}
+                errorMsg="글자수가 너무 많아요!"
+              />
+            )}
             <InputBox
               title="지역"
               changeCallback={setLocationText}
               textValue={locationText}
-              placeholder="예) 동해"
+              placeholder="예) 동해시 123-1"
               inputMode="text"
               autoFocus={true}
               isRequired={true}
+              hasError={locationText.length > 10}
+              errorMsg="글자수가 너무 많아요!"
             />
 
             <CustomDatePicker
@@ -196,25 +225,14 @@ export const GetInfoMore = ({ id }) => {
               changeCallback={setBloodType}
               value={bloodType}
               options={["A", "B", "O", "AB"]}
+              isRequired={true}
             />
             <CustomDropDown
               title="별자리"
               changeCallback={setZodiac}
               value={zodiac}
-              options={[
-                "양자리",
-                "황소자리",
-                "쌍둥이자리",
-                "게자리",
-                "사자자리",
-                "처녀자리",
-                "천칭자리",
-                "전갈자리",
-                "사수자리",
-                "염소자리",
-                "물병자리",
-                "물고기자리",
-              ]}
+              options={zodiacArr}
+              isRequired={true}
             />
             <InputBox
               title="자랑거리"
@@ -226,6 +244,7 @@ export const GetInfoMore = ({ id }) => {
               multiline={true}
               hasError={prideText.length > 50}
               errorMsg="글자수가 너무 많아요!"
+              isRequired={true}
             />
           </>
         ) : (
@@ -263,7 +282,7 @@ export const GetInfoMore = ({ id }) => {
         <CustomButton
           text="Apply"
           pressCallback={() => {
-            const info = {
+            let info = {
               location: locationText,
               birthday: birthdayText,
               photo: photoSrc,
@@ -277,16 +296,31 @@ export const GetInfoMore = ({ id }) => {
             };
             closeWindow(id);
             const nowDt = Date.now();
-            openWindow({
-              id: nowDt,
-              type: "Name",
-              visible: true,
-              title: "New Name!",
-              icon: "images/icons/user_32.png",
-              msg: <NewName id={nowDt} info={info} />,
-              zIndex: 10,
-              isActive: true,
-            });
+            if (forCard) {
+              info.name = nameText;
+              info.vibe = vibeArr[vibe - 1];
+              const nowDt = Date.now();
+              openWindow({
+                id: nowDt,
+                type: "IdCard",
+                visible: true,
+                title: "New Id Card!",
+                icon: "images/icons/card.png",
+                msg: <IdCard info={info} id={nowDt} />,
+                zIndex: 10,
+                isActive: true,
+              });
+            } else
+              openWindow({
+                id: nowDt,
+                type: "Name",
+                visible: true,
+                title: "New Name!",
+                icon: "images/icons/user_32.png",
+                msg: <NewName id={nowDt} info={info} />,
+                zIndex: 10,
+                isActive: true,
+              });
           }}
           disabled={isDisabled}
           highlight={true}

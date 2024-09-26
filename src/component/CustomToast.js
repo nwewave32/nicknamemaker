@@ -6,7 +6,7 @@ import { colorStyle } from "lib/data/styleData";
 import { FlexBox } from "./FlexBox";
 import styled, { keyframes, css } from "styled-components";
 
-import { CopyWindow } from "./CopyWindow";
+import { WindowBox } from "./WindowBox";
 
 const CenteredView = styled(FlexBox).attrs({
   justify: "center",
@@ -30,7 +30,7 @@ Modal.setAppElement("#root");
 
 export const CustomToast = ({ toastVisible, setToastVisible, msg }) => {
   useEffect(() => {
-    setTimeout(() => setToastVisible(false), 2000);
+    setTimeout(() => setToastVisible(false), 2900);
   }, []);
   return (
     <Modal
@@ -38,14 +38,14 @@ export const CustomToast = ({ toastVisible, setToastVisible, msg }) => {
       onRequestClose={() => {
         // setToastVisible((prev) => !prev);
       }}
-      closeTimeoutMS={2000}
+      closeTimeoutMS={2900}
       preventScroll={true}
       className="modal-content"
       overlayClassName="modal-overlay"
     >
       <CenteredView>
         <ModalView direction="column">
-          <CopyWindow
+          <WindowBox
             title="Alert!"
             msg={msg}
             icon="images/icons/chat.png"

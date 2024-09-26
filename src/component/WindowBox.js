@@ -1,82 +1,137 @@
-import React from "react";
-import { HiMinusSmall } from "react-icons/hi2";
-import { GrFormClose } from "react-icons/gr";
+import React, { useState } from "react";
+
 import { HeaderBtn, BorderBox } from "./GlobalStyles";
 import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
-import { CustomText } from "./CustomText";
+import { CustomText, CustomImg } from "component";
 import { FlexBox } from "./FlexBox";
+import { globalUtil } from "lib/util";
 
-const HeaderContainer = styled(BorderBox)`
+const StyledHeaderBtn = styled(HeaderBtn)`
+  width: 20px;
+  height: 20px;
+`;
+
+const HeaderContainer = styled(BorderBox).withConfig({
+  shouldForwardProp: (prop) => !["isActive"].includes(prop),
+})`
   width: 100%;
   border-width: 1px;
-  background-color: ${colorStyle.headerColor};
-  padding: 0;
+  background-color: ${(props) =>
+    props.isActive ? colorStyle.headerColor : colorStyle.darkGray};
+  padding-right: 2px;
   box-sizing: border-box;
 `;
 
 const ModalContainer = styled(FlexBox)`
-  width: 80%;
+  min-width: 300px;
+
+  width: min-content;
+  shadow-color: ${colorStyle.darkGray};
+  box-shadow: 0 1px ${colorStyle.darkGray};
+
+  shadow-opacity: 0.25;
+  shadow-radius: 4px;
+  z-index: 10;
+`;
+
+const Container = styled(FlexBox)`
+  width: 100%;
+  border-style: solid;
   border-width: 0 1px 1px 0;
   border-bottom-color: ${colorStyle.darkGray};
   border-right-color: ${colorStyle.darkGray};
   background-color: ${colorStyle.backgroundColor};
-  shadow-color: ${colorStyle.darkGray};
-  box-shadow: 0 1px ${colorStyle.darkGray};
-  padding: 0;
-  shadow-opacity: 0.25;
-  shadow-radius: 4px;
 `;
 
 const TitleContainer = styled(FlexBox)`
   padding-left: 10px;
 `;
 
-const MsgContainer = styled(FlexBox)`
+const MsgContainer = styled(FlexBox).attrs({
+  justify: "center",
+  direction: "column",
+})`
   padding: 10px;
   min-height: 100px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
+const IconImg = styled.img`
+  margin-right: 3px;
+  margin-left: 10px;
+`;
+
+//window container => for style
 export const WindowBox = ({
-  windowVisible,
+  id,
   setWindowVisible,
+  setWindowDelete,
   msg,
   title,
-  setWindowDelete,
+  icon,
+  isModal,
+  isActive,
   ...rest
 }) => {
   return (
     <ModalContainer direction="column" style={{ ...rest.style }}>
-      <HeaderContainer justify="space-between">
-        <FlexBox>
-          {typeof title === "string" ? (
-            <TitleContainer>
-              <CustomText color={colorStyle.white}>{title}</CustomText>
-            </TitleContainer>
-          ) : (
-            <>{title}</>
-          )}
-        </FlexBox>
-        <FlexBox>
-          {windowVisible !== "none" && (
-            <HeaderBtn justify="center" onClick={() => setWindowVisible(false)}>
-              <HiMinusSmall size={20} color="black" />
-            </HeaderBtn>
-          )}
+      <Container direction="column" id={id} className="IdCardDown">
+        <HeaderContainer justify="space-between" isActive={isActive}>
+          <FlexBox>
+            {globalUtil.checkIsNull(icon) ? (
+              <TitleContainer>
+                <CustomText color={colorStyle.white}>{title}</CustomText>
+              </TitleContainer>
+            ) : (
+              <FlexBox style={{ minHeight: 24 }}>
+                <IconImg src={icon} width={20} />
+                <CustomText color={colorStyle.white}>{title}</CustomText>
+              </FlexBox>
+            )}
+          </FlexBox>
+          <FlexBox>
+            {!isModal && (
+              <StyledHeaderBtn
+                justify="center"
+                align="center"
+                onClick={() => setWindowVisible(id)}
+              >
+                <CustomImg
+                  imgSrc="images/icons/shrink.png"
+                  width={14}
+                  style={{ cursor: "pointer" }}
+                />
+              </StyledHeaderBtn>
+            )}
 
-          <HeaderBtn justify="center" onClick={() => setWindowDelete(true)}>
-            <GrFormClose name="close" size={20} color="black" />
-          </HeaderBtn>
-        </FlexBox>
-      </HeaderContainer>
+            <StyledHeaderBtn
+              justify="center"
+              align="center"
+              onClick={() => {
+                if (globalUtil.checkIsNull(id))
+                  setWindowDelete((prev) => !prev);
+                else setWindowDelete(id);
+              }}
+            >
+              <CustomImg
+                imgSrc="images/icons/close.png"
+                width={14}
+                style={{ cursor: "pointer" }}
+              />
+            </StyledHeaderBtn>
+          </FlexBox>
+        </HeaderContainer>
 
-      {typeof msg === "string" ? (
-        <MsgContainer direction="column">
-          <CustomText>{msg}</CustomText>
-        </MsgContainer>
-      ) : (
-        <>{msg}</>
-      )}
+        {typeof msg === "string" ? (
+          <MsgContainer>
+            <CustomText>{msg}</CustomText>
+          </MsgContainer>
+        ) : (
+          <MsgContainer>{msg}</MsgContainer>
+        )}
+      </Container>
     </ModalContainer>
   );
 };

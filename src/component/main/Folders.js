@@ -3,7 +3,7 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { needUpdateState, storageListState } from "lib/data/atom";
 import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
-import { CopyWindow, CustomText, CustomImg, FlexBox } from "component";
+import { WindowBox, CustomText, CustomImg, FlexBox } from "component";
 
 import { storageUtil } from "lib/util";
 

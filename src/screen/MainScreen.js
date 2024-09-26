@@ -12,6 +12,7 @@ import { colorStyle, randomImgList } from "lib/data/styleData";
 
 import { Intro } from "component/windows";
 import { Folders } from "component/main/Folders";
+import { globalUtil } from "lib/util";
 
 const BackgroundContainer = styled(FlexBox).attrs({
   direction: "column",
@@ -25,10 +26,9 @@ const BackgroundContainer = styled(FlexBox).attrs({
 `;
 
 export default function MainScreen({}) {
-  const dragBackground = useRef(null);
   const [windows, setWindows] = useRecoilState(windowsState);
+
   const openWindow = useSetRecoilState(openWindowSelector);
-  const [isShowMenu, setIsShowMenu] = useRecoilState(isShowMenuState);
 
   useLayoutEffect(() => {
     openWindow({
@@ -43,24 +43,8 @@ export default function MainScreen({}) {
     });
   }, []);
 
-  useLayoutEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        dragBackground.current &&
-        !dragBackground.current.contains(event.target)
-      ) {
-        setIsShowMenu(false); // startmenu 이외의 영역을 클릭했을 때 startmenu 닫기
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   const toggleWindowVisibility = (id) => {
+    console.log("##id", id);
     if (id === 0)
       setWindows(
         windows.map((w) => {
@@ -73,18 +57,16 @@ export default function MainScreen({}) {
           if (w.id === id && w.visible)
             return { ...w, isActive: false, visible: !w.visible };
           else if (w.id !== id && w.visible) return { ...w, isActive: false };
-          else return { ...w, isActive: true, visible: !w.visible };
+          else {
+            return { ...w, isActive: true, visible: !w.visible };
+          }
         })
       );
   };
 
-  useEffect(() => {
-    console.log("##isShowMenu", isShowMenu);
-  }, [isShowMenu]);
-
   return (
     <>
-      <BackgroundContainer ref={dragBackground}>
+      <BackgroundContainer>
         <Folders />
 
         {windows.map((window) => (

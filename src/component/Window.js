@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
-import { CopyWindow } from "./CopyWindow";
+import { WindowBox } from "./WindowBox";
 import { useSetRecoilState } from "recoil";
 import { windowsState, closeWindowSelector } from "lib/data/atom";
 
@@ -18,7 +18,7 @@ export const Window = ({ window, toggleVisibility, ...rest }) => {
   const windowRef = useRef(null);
   const [originPos, setOriginPos] = useState({ x: 0, y: 0 }); // 드래그 전 포지션값 (e.target.offset의 상대 위치)
   const [clientPos, setClientPos] = useState({ x: 0, y: 0 }); // 실시간 커서위치인 e.client를 갱신하는값
-  const [pos, setPos] = useState({ left: 0, top: 0 }); // 실제 drag할 요소가 위치하는 포지션값
+  const [pos, setPos] = useState({ left: "40%", top: "20%" }); // 실제 drag할 요소가 위치하는 포지션값
 
   const dragStartHandler = (e) => {
     const blankCanvas = document.createElement("canvas");
@@ -80,30 +80,36 @@ export const Window = ({ window, toggleVisibility, ...rest }) => {
   const setWindows = useSetRecoilState(windowsState);
 
   useLayoutEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickWindow = (event) => {
       if (windowRef.current && windowRef.current.contains(event.target)) {
         setWindows((prev) => {
-          const originWindows = prev.map((windowItem) => {
-            let active = false;
-
-            if (windowItem.id.toString() === windowRef.current.id)
-              active = true;
-            return {
+          let target;
+          const originWindows = prev
+            .filter((windowItem) => {
+              if (windowItem.id.toString() === windowRef.current.id) {
+                target = {
+                  ...windowItem,
+                  isActive: true,
+                };
+                return false;
+              }
+              return true;
+            })
+            .map((windowItem) => ({
               ...windowItem,
-              isActive: active,
-            };
-          });
+              isActive: false,
+            }));
 
-          return [...originWindows];
+          return [...originWindows, target];
         });
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickWindow);
 
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickWindow);
     };
   }, []);
 
@@ -123,7 +129,7 @@ export const Window = ({ window, toggleVisibility, ...rest }) => {
         zIndex: window.isActive ? 20 : 10,
       }}
     >
-      <CopyWindow
+      <WindowBox
         id={window.id}
         msg={window.msg}
         title={window.title}

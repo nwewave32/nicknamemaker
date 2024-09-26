@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState, Fragment } from "react";
 import {
   BottomSheet,
   CustomImg,
-  FlexBox,
+  CustomButton,
   FullFullContainer,
-  CustomText,
+  CustomModal,
+  FullContainer,
 } from "component";
 import styled from "styled-components";
 import { colorStyle, randomImgList } from "lib/data/styleData";
@@ -13,7 +14,7 @@ import { globalUtil } from "lib/util";
 export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
   const [photoIdx, setPhotoIdx] = useState();
   const [uploadImgUrl, setUploadImgUrl] = useState("");
-  const [btsVisible, setBtsVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onchangeImageUpload = (e) => {
     setImgManageIdx(1);
@@ -25,6 +26,7 @@ export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
     reader.onloadend = () => {
       setUploadImgUrl(reader.result);
     };
+    setModalVisible((prev) => !prev);
   };
 
   const setRandomImg = () => {
@@ -36,20 +38,6 @@ export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
     });
   };
 
-  const photoSelArr = [
-    {
-      id: 0,
-      title: "기본 사진 선택",
-      type: "default",
-      onChange: setRandomImg,
-    },
-    {
-      id: 1,
-      title: "사진 라이브러리에서 선택",
-      type: "file",
-      onChange: onchangeImageUpload,
-    },
-  ];
   const [imgManageIdx, setImgManageIdx] = useState(0); //selected idx in bts
 
   useEffect(() => {
@@ -72,7 +60,7 @@ export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
     <>
       <FullFullContainer direction="column">
         <FullFullContainer
-          onClick={() => setBtsVisible((prev) => !prev)}
+          onClick={() => setModalVisible((prev) => !prev)}
           justify="center"
           id="rtrt"
         >
@@ -81,25 +69,50 @@ export const UploadImage = ({ photoSrc, setPhotoSrc }) => {
             width={24}
             style={{ cursor: "pointer" }}
           />
-          <input
-            name="idCardPhoto"
-            id="idCardPhoto"
-            type="file"
-            style={{ visibility: "hidden", height: 0, width: 0 }}
-            accept="image/*"
-            capture="user"
-            required
-            onChange={(e) => {
-              onchangeImageUpload(e);
-            }}
-          />
         </FullFullContainer>
       </FullFullContainer>
-      <BottomSheet
-        btsVisible={btsVisible}
-        setBtsVisible={setBtsVisible}
-        header="사진 옵션 선택"
-        items={photoSelArr}
+
+      <CustomModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        msg={
+          <>
+            <FullContainer>
+              <CustomButton
+                text="기본 사진 선택"
+                margin={{ right: "5px" }}
+                pressCallback={() => setRandomImg()}
+              />
+              <label
+                htmlFor="idCardPhoto"
+                style={{
+                  width: "100%",
+                  cursor: "pointer",
+                }}
+              >
+                <CustomButton
+                  margin={{ right: "5px" }}
+                  text="사진 라이브러리에서 선택"
+                  pressCallback={(e) => e.stopPropagation()}
+                />
+              </label>
+              <input
+                name="idCardPhoto"
+                id="idCardPhoto"
+                type="file"
+                style={{ visibility: "hidden", height: 0, width: 0 }}
+                accept="image/*"
+                capture="user"
+                required
+                onChange={(e) => {
+                  onchangeImageUpload(e);
+                }}
+              />
+            </FullContainer>
+          </>
+        }
+        icon="images/icons/camera_1.png"
+        title="사진 옵션 선택"
       />
     </>
   );

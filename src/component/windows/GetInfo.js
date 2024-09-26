@@ -2,12 +2,11 @@ import React, { useEffect, useState, Fragment, useLayoutEffect } from "react";
 import { colorStyle, randomImgList } from "lib/data/styleData";
 import {
   FlexBox,
-  BottomSheet,
   CustomText,
   CustomButton,
   InputBox,
   UploadImage,
-  CopyWindow,
+  WindowBox,
   CustomImg,
 } from "component";
 import styled from "styled-components";
@@ -167,6 +166,7 @@ export const GetInfo = ({ id }) => {
                         photo: photoSrc,
                       };
                       closeWindow(id);
+
                       openWindow({
                         id: Date.now(),
                         type: "IdCard",

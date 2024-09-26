@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
-import { GrFormClose } from "react-icons/gr";
+
 import { colorStyle } from "lib/data/styleData";
-import { CustomText } from "./CustomText";
 import { FlexBox } from "./FlexBox";
+import { WindowBox, CustomButton } from "component";
 import styled from "styled-components";
-import { HeaderBtn, BorderBox } from "./GlobalStyles";
-import { CopyWindow } from "./CopyWindow";
+import { FullContainer, BorderBox } from "./GlobalStyles";
+import { shareUtil } from "lib/util";
 
 const CenteredView = styled(FlexBox).attrs({
   justify: "center",
@@ -33,21 +33,9 @@ const ModalView = styled(FlexBox)`
   shadow-radius: 4px;
 `;
 
-const ModalHeader = styled(BorderBox).attrs({
-  justify: "space-between",
-})`
-  width: 100%;
-  padding-left: 10px;
-  box-sizing: border-box;
-  border-width: 1px;
-`;
-
-const MsgContainer = styled(FlexBox).attrs({
-  direction: "column",
-  justify: "center",
-})`
-  min-height: 100px;
-  padding: 10px;
+const FullWithMargin = styled(FullContainer)`
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 Modal.setAppElement("#root");
@@ -88,7 +76,7 @@ export const CustomModal = ({
     >
       <CenteredView>
         <ModalView direction="column">
-          <CopyWindow
+          <WindowBox
             title={title}
             msg={msg}
             icon={icon}
@@ -96,31 +84,74 @@ export const CustomModal = ({
             isActive={true}
             setWindowDelete={setModalVisible}
           />
-          {/* <ModalHeader>
-            {typeof title === "string" ? (
-              <CustomText color={colorStyle.white}>{title}</CustomText>
-            ) : (
-              <>{title}</>
-            )}
-
-            <HeaderBtn
-              onClick={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <GrFormClose name="close" size={20} color="black" />
-            </HeaderBtn>
-          </ModalHeader>
-
-          <MsgContainer>
-            {typeof msg === "string" ? (
-              <CustomText>{msg}</CustomText>
-            ) : (
-              <FlexBox>{msg}</FlexBox>
-            )}
-          </MsgContainer> */}
         </ModalView>
       </CenteredView>
     </Modal>
+  );
+};
+
+export const ShareModal = ({
+  modalVisible,
+  setModalVisible,
+  nowUrl,
+  setToastMsg,
+  setToastVisible,
+}) => {
+  return (
+    <CustomModal
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
+      msg={
+        <>
+          <FullContainer>
+            <CustomButton
+              text="Facebook"
+              margin={{ right: "5px" }}
+              pressCallback={() => shareUtil.shareFacebook(nowUrl)}
+            />
+
+            <CustomButton
+              margin={{ right: "5px" }}
+              text="Kakao Talk"
+              pressCallback={() => shareUtil.shareKakao(nowUrl)}
+            />
+          </FullContainer>
+          <FullWithMargin>
+            <CustomButton
+              text="Twitter"
+              margin={{ right: "5px" }}
+              pressCallback={() => shareUtil.shareTwitter(nowUrl)}
+            />
+            <CustomButton
+              margin={{ right: "5px" }}
+              text="Naver"
+              pressCallback={() => shareUtil.shareNaver(nowUrl)}
+            />
+            <CustomButton
+              margin={{ right: "5px" }}
+              text="Link"
+              pressCallback={() => {
+                shareUtil
+                  .shareUrl(nowUrl)
+                  .then((res) => {
+                    //alret modal
+                    if (modalVisible) setModalVisible(false);
+                    setToastMsg("URL이 복사되었습니다");
+                    setToastVisible(true);
+                  })
+                  .catch(() => {
+                    //alret modal
+                    if (modalVisible) setModalVisible(false);
+                    setToastMsg("URL 복사를 실패했습니다");
+                    setToastVisible(true);
+                  });
+              }}
+            />
+          </FullWithMargin>
+        </>
+      }
+      icon="images/icons/tree_16.png"
+      title="Share"
+    />
   );
 };

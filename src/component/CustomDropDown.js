@@ -10,6 +10,7 @@ import {
   CustomText,
 } from "component";
 import { colorStyle } from "lib/data/styleData";
+import { globalUtil } from "lib/util";
 
 const StyledDropDown = styled(BorderBox)`
   font-family: Galmuri14;
@@ -103,7 +104,7 @@ export const CustomDropDown = ({
           style={{ width: "100%", minHeight: "10px" }}
           onClick={() => setShowOptions((prev) => !prev)}
         >
-          {value}
+          {globalUtil.checkIsNull(value) ? "(선택 안함)" : value}
         </CustomText>
         <DropDownBtn
           align="center"
