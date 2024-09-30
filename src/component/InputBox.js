@@ -35,7 +35,7 @@ const StyledTextArea = styled.textarea`
   outline: none;
   width: 100%;
   caret-color: ${colorStyle.darkGray};
-  height: 150px;
+  height: 120px;
   font-size: 12px;
   text-align: start;
   resize: none;

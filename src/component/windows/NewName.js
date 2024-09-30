@@ -13,6 +13,7 @@ import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { closeWindowSelector, openWindowSelector } from "lib/data/atom";
 import { IdCard } from "./IdCard";
+import { TYPE } from "lib/data/constant";
 
 const FullWithMargin = styled(FullContainer)`
   margin-top: 10px;
@@ -107,7 +108,7 @@ export const NewName = ({ id, info }) => {
                 const nowDt = Date.now();
                 openWindow({
                   id: nowDt,
-                  type: "IdCard",
+                  type: TYPE.NEWCARD,
                   visible: true,
                   title: "New Id Card!",
                   icon: "images/icons/card.png",

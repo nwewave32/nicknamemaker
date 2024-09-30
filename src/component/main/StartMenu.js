@@ -1,6 +1,12 @@
 import React, { useEffect, useState, Fragment, forwardRef } from "react";
 import styled from "styled-components";
-import { FlexBox, CustomText, CustomModal, CustomImg } from "component";
+import {
+  FlexBox,
+  CustomText,
+  CustomModal,
+  CustomImg,
+  CustomToast,
+} from "component";
 import { BorderBox, BorderLine } from "component/GlobalStyles";
 import { AppInfo, GetInfo, GetInfoMore } from "component/windows";
 import { MdArrowRight } from "react-icons/md";
@@ -12,6 +18,7 @@ import {
   isShowMenuState,
   windowsState,
 } from "lib/data/atom";
+import { TYPE } from "lib/data/constant";
 
 const ParentsMenuContainer = styled(BorderBox)
   .attrs({
@@ -68,7 +75,8 @@ const ChildMenuItem = styled(FlexBox).attrs({
 export const StartMenu = forwardRef((props, ref) => {
   const [isShowMenu, setIsShowMenu] = useRecoilState(isShowMenuState);
   const [isShowChildMenu, setIsShowChildMenu] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
+
   const storageData = useRecoilValue(storageListState);
 
   const openWindow = useSetRecoilState(openWindowSelector);
@@ -108,14 +116,14 @@ export const StartMenu = forwardRef((props, ref) => {
           id: 0,
           name: "Name",
           icon: "images/icons/file_pencil.png",
-          nav: "NewName",
+          nav: TYPE.GETINFO,
           parents: "New",
         },
         {
           id: 1,
           name: "ID Card",
           icon: "images/icons/bear.png",
-          nav: "NewCard",
+          nav: TYPE.GETINFONAME,
           parents: "New",
         },
       ],
@@ -147,6 +155,10 @@ export const StartMenu = forwardRef((props, ref) => {
     if (!isShowMenu) setIsShowChildMenu(""); // 부모 사라지면 자식도 같이 사라짐
   }, [isShowMenu]);
 
+  useEffect(() => {
+    console.log("##toastVisible", toastVisible);
+  }, [toastVisible]);
+
   return (
     <>
       <ParentsMenuContainer isShowMenu={isShowMenu} ref={ref}>
@@ -160,7 +172,7 @@ export const StartMenu = forwardRef((props, ref) => {
                   else
                     openWindow({
                       id: Date.now(),
-                      type: "appInfo",
+                      type: TYPE.APPINFO,
                       visible: true,
                       title: "information",
                       icon: "",
@@ -212,9 +224,9 @@ export const StartMenu = forwardRef((props, ref) => {
 
                                 if (!childItem.name.includes("ready")) {
                                   //new 메뉴
-
+                                  console.log("##era");
                                   if (storageData.length < 10) {
-                                    if (childItem.nav.includes("Card")) {
+                                    if (childItem.nav === TYPE.GETINFONAME) {
                                       const nowDt = Date.now();
                                       openWindow({
                                         id: nowDt,
@@ -232,8 +244,9 @@ export const StartMenu = forwardRef((props, ref) => {
                                         zIndex: 10,
                                         isActive: true,
                                       });
-                                    } else if (childItem.nav.includes("Name")) {
+                                    } else if (childItem.nav === TYPE.GETINFO) {
                                       const nowDt = Date.now();
+                                      console.log("##???", nowDt);
                                       openWindow({
                                         id: nowDt,
                                         type: childItem.nav,
@@ -246,7 +259,10 @@ export const StartMenu = forwardRef((props, ref) => {
                                         isActive: true,
                                       });
                                     }
-                                  } else setModalVisible(true); //10개면 더이상 저장 못한다고
+                                  } else {
+                                    console.log("##??????");
+                                    setToastVisible(true); //10개면 더이상 저장 못한다고
+                                  }
                                 }
                               }}
                             >
@@ -274,13 +290,14 @@ export const StartMenu = forwardRef((props, ref) => {
           );
         })}
       </ParentsMenuContainer>
-      <CustomModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        msg="이름은 최대 10개 까지만 만들 수 있어요. 다른 이름을 생성하고 싶다면 폴더를 삭제해주세요."
-        icon="images/icons/warning.png"
-        title="Error!"
-      />
+
+      {toastVisible && (
+        <CustomToast
+          toastVisible={toastVisible}
+          setToastVisible={setToastVisible}
+          msg="이름은 최대 10개 까지만 만들 수 있어요. 다른 이름을 생성하고 싶다면 폴더를 삭제해주세요."
+        />
+      )}
     </>
   );
 });

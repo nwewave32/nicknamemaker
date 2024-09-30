@@ -12,7 +12,8 @@ import { colorStyle, randomImgList } from "lib/data/styleData";
 
 import { Intro } from "component/windows";
 import { Folders } from "component/main/Folders";
-import { globalUtil } from "lib/util";
+import { globalUtil, storageUtil } from "lib/util";
+import { TYPE } from "lib/data/constant";
 
 const BackgroundContainer = styled(FlexBox).attrs({
   direction: "column",
@@ -20,7 +21,7 @@ const BackgroundContainer = styled(FlexBox).attrs({
 })`
   height: 100vh;
   width: 100vw;
-
+  overflow: hidden;
   position: relative;
   background: ${colorStyle.windowBackColor};
 `;
@@ -31,9 +32,11 @@ export default function MainScreen({}) {
   const openWindow = useSetRecoilState(openWindowSelector);
 
   useLayoutEffect(() => {
+    // storageUtil.clearAll();
+
     openWindow({
       id: Date.now(), // Unique ID for each window
-      type: "intro",
+      type: TYPE.INTRO,
       visible: true,
       title: "반가워요!",
       icon: "images/icons/hand.png",

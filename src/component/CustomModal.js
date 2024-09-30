@@ -69,7 +69,6 @@ export const CustomModal = ({
     <Modal
       isOpen={modalVisible}
       onRequestClose={() => {
-        alert("Modal has been closed.");
         setModalVisible((prev) => !prev);
       }}
       style={customStyles}

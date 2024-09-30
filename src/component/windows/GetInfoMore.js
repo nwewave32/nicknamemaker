@@ -31,7 +31,7 @@ import {
 
 import { globalUtil } from "lib/util";
 import { NewName, IdCard } from "component/windows";
-import { zodiac as zodiacConst } from "lib/data/constant";
+import { TYPE, zodiac as zodiacConst } from "lib/data/constant";
 
 const TabBox = styled(BorderBox).attrs({
   justify: "center",
@@ -181,7 +181,7 @@ export const GetInfoMore = ({ id, forCard = false }) => {
                 inputMode="text"
                 autoFocus={true}
                 isRequired={true}
-                hasError={nameText.length > 10}
+                hasError={nameText.length > 15}
                 errorMsg="글자수가 너무 많아요!"
               />
             )}
@@ -193,7 +193,7 @@ export const GetInfoMore = ({ id, forCard = false }) => {
               inputMode="text"
               autoFocus={true}
               isRequired={true}
-              hasError={locationText.length > 10}
+              hasError={locationText.length > 15}
               errorMsg="글자수가 너무 많아요!"
             />
 
@@ -302,7 +302,7 @@ export const GetInfoMore = ({ id, forCard = false }) => {
               const nowDt = Date.now();
               openWindow({
                 id: nowDt,
-                type: "IdCard",
+                type: TYPE.NEWCARD,
                 visible: true,
                 title: "New Id Card!",
                 icon: "images/icons/card.png",
@@ -313,7 +313,7 @@ export const GetInfoMore = ({ id, forCard = false }) => {
             } else
               openWindow({
                 id: nowDt,
-                type: "Name",
+                type: TYPE.NEWNAME,
                 visible: true,
                 title: "New Name!",
                 icon: "images/icons/user_32.png",

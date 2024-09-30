@@ -17,6 +17,7 @@ import { useSetRecoilState } from "recoil";
 import { closeWindowSelector, openWindowSelector } from "lib/data/atom";
 import { IdCard } from "component/windows";
 import { globalUtil } from "lib/util";
+import { TYPE } from "lib/data/constant";
 
 const EmptySpace = styled.div`
   width: 100px;
@@ -169,7 +170,7 @@ export const GetInfo = ({ id }) => {
 
                       openWindow({
                         id: Date.now(),
-                        type: "IdCard",
+                        type: TYPE.NEWCARD,
                         visible: true,
                         title: "New Id Card!",
                         icon: "images/icons/card.png",

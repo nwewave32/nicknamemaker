@@ -1,12 +1,22 @@
 import nameList from "../nameCollection.json";
 
 const MakeNameUtil = () => {
-  const makeNameFuncMain = (middleName, vibe) => {
-    let result = {
-      first: getName(nameList.firstName[vibe]),
-      middle: middleName ? getName(nameList.middleName) : false,
-      last: getName(nameList.lastName),
-    };
+  const makeNameFuncMain = (hasMiddleName, vibe) => {
+    let result;
+
+    let firstName = getName(nameList.firstName[vibe]);
+    let middleName = hasMiddleName ? getName(nameList.middleName) : false;
+    let lastName = getName(nameList.lastName);
+    if (firstName.length + middleName.length + lastName.length > 15) {
+      lastName = "도";
+      middleName = false;
+    } else {
+      result = {
+        first: firstName,
+        middle: middleName,
+        last: lastName,
+      };
+    }
 
     return result;
   };

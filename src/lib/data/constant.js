@@ -60,3 +60,13 @@ export const zodiac = [
     value: "pisces",
   },
 ];
+
+export const TYPE = {
+  INTRO: "intro",
+  APPINFO: "appInfo",
+  GETINFO: "getInfo",
+  GETINFONAME: "getInfoWithName",
+  NEWNAME: "newName",
+  NEWCARD: "newCard",
+  SAVEDCARD: "savedCard",
+};

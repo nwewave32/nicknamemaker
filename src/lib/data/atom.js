@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import { TYPE } from "./constant";
 
 export const needUpdateState = atom({
   key: "needUpdateState",
@@ -29,9 +30,15 @@ export const openWindowSelector = selector({
   set: ({ get, set }, newWindow) => {
     let hasWindow = false;
     const prevWindows = get(windowsState);
+
     const originWindows = prevWindows.map((window) => {
-      const isSameType = window.type === newWindow.type;
-      if (isSameType) hasWindow = true;
+      const isSameType = window.type === newWindow.type; //isSameType은 같은 타입인지 확인 + 중복이 가능한지
+      const duclicable =
+        newWindow.type === TYPE.NEWCARD ||
+        newWindow.type === TYPE.NEWNAME ||
+        newWindow.type === TYPE.SAVEDCARD;
+
+      if (isSameType && !duclicable) hasWindow = true;
       return {
         ...window,
         isActive: isSameType,

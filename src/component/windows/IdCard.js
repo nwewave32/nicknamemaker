@@ -1,4 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  startTransition,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import styled from "styled-components";
 import {
   FlexBox,
@@ -8,14 +13,18 @@ import {
   CustomText,
   CustomToast,
 } from "component";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { needUpdateState, storageListState } from "lib/data/atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  needUpdateState,
+  storageListState,
+  closeWindowSelector,
+} from "lib/data/atom";
 
 import { colorStyle } from "lib/data/styleData";
 import { zodiac } from "lib/data/constant";
 import moment from "moment";
 import html2canvas from "html2canvas";
-import { globalUtil } from "lib/util";
+import { globalUtil, storageUtil } from "lib/util";
 
 const CardContainer = styled(FlexBox)`
   width: 400px;
@@ -54,9 +63,6 @@ const IdPhotoImg = styled.div`
 
 const ButtonContainer = styled(FlexBox)`
   padding: 10px;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: ${colorStyle.headerColor};
 `;
 
 const FirstColBottom = styled(FlexBox)`
@@ -106,11 +112,13 @@ const Border = styled.div`
   width: 90%;
 `;
 
-export const IdCard = ({ info, id }) => {
+export const IdCard = ({ info, id, forSave = false }) => {
   const [storageData, setStorageData] = useRecoilState(storageListState);
   const [modalVisible, setModalVisible] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMsg, setToastMsg] = useState(false);
+  const closeWindow = useSetRecoilState(closeWindowSelector);
+  const setNeedUpdate = useSetRecoilState(needUpdateState);
   const nowUrl = window.location.href;
 
   const getZodiacImage = (paraZodiac) => {
@@ -124,7 +132,8 @@ export const IdCard = ({ info, id }) => {
 
   const saveAsImageHandler = () => {
     const target = document.getElementById(id);
-
+    const delTarget = document.getElementById("forSave");
+    delTarget.style.visibility = "hidden";
     if (!target) {
       return alert("결과 저장에 실패했습니다.");
     }
@@ -135,23 +144,33 @@ export const IdCard = ({ info, id }) => {
       link.download = `${info.name}.png`;
       link.click();
       document.body.removeChild(link);
+      delTarget.style.visibility = "visible";
     });
   };
 
   const saveAsFolder = () => {
     const isNull = storageData.find((item) => item.id === id);
-    if (globalUtil.checkIsNull(isNull))
+    if (globalUtil.checkIsNull(isNull)) {
       setStorageData((prev) => {
         const newItem = {
           ...info,
-          id: id,
+          id: id, // 이 아이디는 해당 idcard가 만들어질때 고유 번호임
         };
+        storageUtil.storeData(newItem);
+
         return [...prev, newItem];
       });
-    else {
+    } else {
       setToastMsg("중복된 이름이 있습니다");
       setToastVisible(true);
     }
+  };
+
+  const deleteFolder = () => {
+    storageUtil.removeData(info.id); // 여기서 쓰는 id는 새로 만들어지는 id라서
+    setNeedUpdate(true);
+    closeWindow(info.id);
+    closeWindow(id); //혹시 열려있으면
   };
 
   return (
@@ -162,25 +181,35 @@ export const IdCard = ({ info, id }) => {
             <IdPhotoImg>
               <CustomImg imgSrc={info.photo} />
             </IdPhotoImg>
-            <ButtonContainer>
-              <CustomButton
-                margin={{ right: "5px" }}
-                text="Share"
-                pressCallback={() => setModalVisible(true)}
-              />
+            {forSave ? (
+              <ButtonContainer id="forSave">
+                <CustomButton
+                  text="Delete"
+                  pressCallback={() => deleteFolder()}
+                />
+              </ButtonContainer>
+            ) : (
+              <ButtonContainer id="forSave">
+                <CustomButton
+                  margin={{ right: "5px" }}
+                  text="Share"
+                  pressCallback={() => setModalVisible(true)}
+                />
 
-              <CustomButton
-                margin={{ right: "5px" }}
-                text="Download"
-                pressCallback={() => saveAsImageHandler()}
-              />
-              <CustomButton
-                margin={{ right: "5px" }}
-                text="Save"
-                pressCallback={() => saveAsFolder()}
-              />
-            </ButtonContainer>
+                <CustomButton
+                  margin={{ right: "5px" }}
+                  text="Download"
+                  pressCallback={() => saveAsImageHandler()}
+                />
+                <CustomButton
+                  margin={{ right: "5px" }}
+                  text="Save"
+                  pressCallback={() => saveAsFolder()}
+                />
+              </ButtonContainer>
+            )}
           </FirstColTop>
+          <Border />
           <FirstColBottom justify="center">
             <CustomText fontWeight="bold" fontSize={20} textAlign="center">
               {info.name}
