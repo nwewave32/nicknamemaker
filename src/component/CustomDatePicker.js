@@ -22,6 +22,7 @@ export const CustomDatePicker = ({
           const newDt = moment(date);
           if (date !== null && newDt.isValid()) {
             const returnVal = newDt.format("YYYY-MM-DD");
+            console.log("##returnVal", returnVal);
             changeCallback(returnVal);
           }
         }}

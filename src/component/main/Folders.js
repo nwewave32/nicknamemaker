@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import {
   needUpdateState,
   storageListState,
   openWindowSelector,
+  closeWindowSelector,
+  windowsState,
 } from "lib/data/atom";
 import styled from "styled-components";
 import { colorStyle } from "lib/data/styleData";
@@ -39,6 +46,8 @@ export const Folders = ({}) => {
   const resetStorage = useResetRecoilState(storageListState);
   const [needUpdate, setNeedUpdate] = useRecoilState(needUpdateState);
   const openWindow = useSetRecoilState(openWindowSelector);
+  const closeWindow = useSetRecoilState(closeWindowSelector);
+  const windows = useRecoilValue(windowsState);
 
   const getStorageData = () => {
     const data = storageUtil.getData();
@@ -63,15 +72,26 @@ export const Folders = ({}) => {
     };
   }, []);
 
+  const clearData = () => {
+    for (let index = 0; index < storageData.length; index++) {
+      const item = storageData[index];
+
+      closeWindow(item.id);
+    }
+    for (let index = 0; index < windows.length; index++) {
+      const window = windows[index];
+
+      if (window.type === TYPE.SAVEDCARD) closeWindow(window.id);
+    }
+    //이거 끝나고 꺼져야 함
+    storageUtil.clearAll();
+
+    resetStorage();
+  };
+
   return (
     <ContentContainer>
-      <FolderContainer
-        onClick={() => {
-          storageUtil.clearAll();
-          //todo: close window
-          resetStorage();
-        }}
-      >
+      <FolderContainer onClick={() => clearData()}>
         <CustomImg
           imgSrc="images/icons/bin_filled.png"
           width={32}

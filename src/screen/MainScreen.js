@@ -28,7 +28,9 @@ const BackgroundContainer = styled(FlexBox).attrs({
 
 export default function MainScreen({}) {
   const [windows, setWindows] = useRecoilState(windowsState);
-
+  useEffect(() => {
+    console.log("##windows", windows);
+  }, [windows]);
   const openWindow = useSetRecoilState(openWindowSelector);
 
   useLayoutEffect(() => {

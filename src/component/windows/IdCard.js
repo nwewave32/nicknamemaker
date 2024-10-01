@@ -59,6 +59,9 @@ const IdPhotoImg = styled.div`
   width: 150px;
   height: 150px;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ButtonContainer = styled(FlexBox)`

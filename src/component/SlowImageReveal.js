@@ -12,7 +12,6 @@ import { ProcessBar } from "./ProcessBar";
 import { colorStyle } from "lib/data/styleData";
 
 import { FullContainer } from "./GlobalStyles";
-import { CheckBox } from "./CheckBox";
 
 const RevealBox = styled(FlexBox)`
   height: 100%;

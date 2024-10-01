@@ -8,11 +8,3 @@ export const colorStyle = {
   darkGray: "#818181",
   black: "#000",
 };
-
-export const randomImgList = [
-  "images/Exploding.jpg",
-  "images/Nice.jpg",
-  "images/SayHi.jpg",
-  "images/Sick.jpg",
-  "images/Working.jpg",
-];

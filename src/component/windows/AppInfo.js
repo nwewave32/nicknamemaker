@@ -21,7 +21,7 @@ export const AppInfo = () => {
         감사합니다!
       </CustomText>
 
-      <FlexBox style={{ padding: 10, width: "100%" }} justify="flex-end">
+      {/* <FlexBox style={{ padding: 10, width: "100%" }} justify="flex-end">
         <FlexBox>
           <CustomText fontSize={10}>{"개발자 커피 사주기 >"}</CustomText>
 
@@ -32,7 +32,7 @@ export const AppInfo = () => {
             marginRight={3}
           />
         </FlexBox>
-      </FlexBox>
+      </FlexBox> */}
     </>
   );
 };

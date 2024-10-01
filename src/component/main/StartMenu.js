@@ -298,6 +298,7 @@ export const StartMenu = forwardRef((props, ref) => {
           msg="이름은 최대 10개 까지만 만들 수 있어요. 다른 이름을 생성하고 싶다면 폴더를 삭제해주세요."
         />
       )}
+      {/* todo: 안 뜬 다 */}
     </>
   );
 });

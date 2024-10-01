@@ -261,7 +261,6 @@ export const GetInfoMore = ({ id, forCard = false }) => {
                 />
               </LeftContainer>
               <RightContainer direction="column">
-                {/* todo: design */}
                 {vibeArr.map((item, idx) => (
                   <CustomButton
                     key={item}
