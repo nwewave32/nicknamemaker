@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/nicknamemaker/static/css/main.2f1e435e.css",
-    "main.js": "/nicknamemaker/static/js/main.e3d832a1.js",
+    "main.js": "/nicknamemaker/static/js/main.f716e3c9.js",
     "static/js/206.67d3dcaa.chunk.js": "/nicknamemaker/static/js/206.67d3dcaa.chunk.js",
     "static/media/Galmuri14.ttf": "/nicknamemaker/static/media/Galmuri14.3714d734c8f2e55ac6ec.ttf",
     "static/media/Galmuri11.ttf": "/nicknamemaker/static/media/Galmuri11.518c88286149f2e7e4c1.ttf",
@@ -25,6 +25,6 @@
   },
   "entrypoints": [
     "static/css/main.2f1e435e.css",
-    "static/js/main.e3d832a1.js"
+    "static/js/main.f716e3c9.js"
   ]
 }
