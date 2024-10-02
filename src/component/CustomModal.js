@@ -108,19 +108,18 @@ export const ShareModal = ({
               margin={{ right: "5px" }}
               pressCallback={() => shareUtil.shareFacebook(nowUrl)}
             />
-
             <CustomButton
-              margin={{ right: "5px" }}
-              text="Kakao Talk"
-              pressCallback={() => shareUtil.shareKakao(nowUrl)}
-            />
-          </FullContainer>
-          <FullWithMargin>
-            <CustomButton
-              text="Twitter"
+              text="X"
               margin={{ right: "5px" }}
               pressCallback={() => shareUtil.shareTwitter(nowUrl)}
             />
+            {/* <CustomButton
+              margin={{ right: "5px" }}
+              text="Kakao Talk"
+              pressCallback={() => shareUtil.shareKakao(nowUrl)}
+            /> */}
+          </FullContainer>
+          <FullWithMargin>
             <CustomButton
               margin={{ right: "5px" }}
               text="Naver"
