@@ -26,6 +26,7 @@ export const NewName = ({ id, info }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMsg, setToastMsg] = useState(false);
+  const [isUnique, setIsUnique] = useState(false);
 
   const openWindow = useSetRecoilState(openWindowSelector);
   const closeWindow = useSetRecoilState(closeWindowSelector);
@@ -44,12 +45,8 @@ export const NewName = ({ id, info }) => {
     setToastVisible(true);
   }
   const getNewName = () => {
-    const hasMiddleName = info.bloodType === "A" || info.bloodType === "AB";
     setNewName(() => {
-      const result = makeNameUtil.makeNameFuncMain(
-        hasMiddleName,
-        info.vibe.name
-      );
+      const result = makeNameUtil.makeNameFuncMain(info, isUnique);
 
       return `${result.first} ${result.middle || ""} ${result.last}`;
     });
@@ -58,7 +55,7 @@ export const NewName = ({ id, info }) => {
     if (!isShowBtns) {
       setTimeout(() => getNewName(), 500);
     }
-  }, [isShowBtns]);
+  }, [isShowBtns, isUnique]);
 
   return (
     <>
@@ -86,6 +83,7 @@ export const NewName = ({ id, info }) => {
               margin={{ right: "5px" }}
               text="Retry"
               pressCallback={() => {
+                setIsUnique((prev) => !prev);
                 setIsShowBtns(false);
               }}
             />

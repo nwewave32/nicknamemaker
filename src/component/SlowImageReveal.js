@@ -5,13 +5,11 @@ import React, {
   useEffect,
 } from "react";
 import { FlexBox } from "./FlexBox";
-import { globalUtil, makeNameUtil } from "lib/util";
+
 import { CustomText } from "./CustomText";
 import styled from "styled-components";
 import { ProcessBar } from "./ProcessBar";
 import { colorStyle } from "lib/data/styleData";
-
-import { FullContainer } from "./GlobalStyles";
 
 const RevealBox = styled(FlexBox)`
   height: 100%;

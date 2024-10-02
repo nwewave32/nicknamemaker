@@ -159,6 +159,84 @@ export const StartMenu = forwardRef((props, ref) => {
     console.log("##toastVisible", toastVisible);
   }, [toastVisible]);
 
+  const defaultWindow = {
+    id: Date.now(),
+    type: "",
+    visible: true,
+    title: "",
+    icon: "",
+    msg: "",
+    zIndex: 10,
+    isActive: true,
+  };
+
+  const ChildItemFunc = ({ menuItem }) => {
+    return (
+      <>
+        <CustomImg
+          imgSrc="images/icons/filled_arrow.png"
+          width={12}
+          marginRight={8}
+        />
+        {isShowChildMenu === menuItem.child[0].parents ? (
+          <ChildMenuContainer>
+            {menuItem.child.map((childItem) => {
+              return (
+                <ChildMenuItem
+                  key={childItem.id + childItem.name}
+                  onClick={() => {
+                    setIsShowMenu(false);
+
+                    if (!childItem.name.includes("ready")) {
+                      //new 메뉴
+
+                      if (storageData.length < 10) {
+                        if (childItem.nav === TYPE.GETINFONAME) {
+                          const nowDt = Date.now();
+                          const window = {
+                            ...defaultWindow,
+                            id: nowDt,
+                            type: childItem.nav,
+                            title: "Id Card를 위한 정보를 입력해주세요.",
+                            msg: <GetInfoMore id={nowDt} forCard={true} />,
+                          };
+                          openWindow(window);
+                        } else if (childItem.nav === TYPE.GETINFO) {
+                          const nowDt = Date.now();
+
+                          const window = {
+                            ...defaultWindow,
+                            id: nowDt,
+                            type: childItem.nav,
+                            title: "새 이름을 위한 정보를 입력해주세요.",
+                            msg: <GetInfoMore id={nowDt} />,
+                          };
+                          openWindow(window);
+                        }
+                      } else {
+                        setToastVisible((prev) => !prev); //10개면 더이상 저장 못한다고
+                        setIsShowMenu((prev) => !prev);
+                      }
+                    }
+                  }}
+                >
+                  <CustomImg
+                    imgSrc={childItem.icon}
+                    width={24}
+                    marginRight={7}
+                  />
+                  <CustomText>{childItem.name}</CustomText>
+                </ChildMenuItem>
+              );
+            })}
+          </ChildMenuContainer>
+        ) : (
+          <></>
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       <ParentsMenuContainer isShowMenu={isShowMenu} ref={ref}>
@@ -169,17 +247,16 @@ export const StartMenu = forwardRef((props, ref) => {
               <ParentsMenuItem
                 onClick={() => {
                   if (menuItem.child) setIsShowChildMenu(menuItem.name);
-                  else
-                    openWindow({
+                  else {
+                    const window = {
+                      ...defaultWindow,
                       id: Date.now(),
                       type: TYPE.APPINFO,
-                      visible: true,
                       title: "information",
-                      icon: "",
                       msg: <AppInfo />,
-                      zIndex: 10,
-                      isActive: true,
-                    }); //child 없는 메뉴는 app info 뿐이라 얘만 일단 넣겠다
+                    };
+                    openWindow(window); //child 없는 메뉴는 app info 뿐이라 얘만 일단 넣겠다
+                  }
                 }}
                 key={menuItem.id + menuItem.name}
                 backcolor={
@@ -206,83 +283,7 @@ export const StartMenu = forwardRef((props, ref) => {
                   </CustomText>
                 </FlexBox>
 
-                {menuItem.child ? (
-                  <>
-                    <CustomImg
-                      imgSrc="images/icons/filled_arrow.png"
-                      width={12}
-                      marginRight={8}
-                    />
-                    {isShowChildMenu === menuItem.child[0].parents ? (
-                      <ChildMenuContainer>
-                        {menuItem.child.map((childItem) => {
-                          return (
-                            <ChildMenuItem
-                              key={childItem.id + childItem.name}
-                              onClick={() => {
-                                setIsShowMenu(false);
-
-                                if (!childItem.name.includes("ready")) {
-                                  //new 메뉴
-                                  console.log("##era");
-                                  if (storageData.length < 10) {
-                                    if (childItem.nav === TYPE.GETINFONAME) {
-                                      const nowDt = Date.now();
-                                      openWindow({
-                                        id: nowDt,
-                                        type: childItem.nav,
-                                        visible: true,
-                                        title:
-                                          "Id Card를 위한 정보를 입력해주세요.",
-                                        icon: "images/icons/keyboard.png",
-                                        msg: (
-                                          <GetInfoMore
-                                            id={nowDt}
-                                            forCard={true}
-                                          />
-                                        ),
-                                        zIndex: 10,
-                                        isActive: true,
-                                      });
-                                    } else if (childItem.nav === TYPE.GETINFO) {
-                                      const nowDt = Date.now();
-                                      console.log("##???", nowDt);
-                                      openWindow({
-                                        id: nowDt,
-                                        type: childItem.nav,
-                                        visible: true,
-                                        title:
-                                          "새 이름을 위한 정보를 입력해주세요.",
-                                        icon: "images/icons/keyboard.png",
-                                        msg: <GetInfoMore id={nowDt} />,
-                                        zIndex: 10,
-                                        isActive: true,
-                                      });
-                                    }
-                                  } else {
-                                    console.log("##??????");
-                                    setToastVisible(true); //10개면 더이상 저장 못한다고
-                                  }
-                                }
-                              }}
-                            >
-                              <CustomImg
-                                imgSrc={childItem.icon}
-                                width={24}
-                                marginRight={7}
-                              />
-                              <CustomText>{childItem.name}</CustomText>
-                            </ChildMenuItem>
-                          );
-                        })}
-                      </ChildMenuContainer>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                ) : (
-                  <></>
-                )}
+                {menuItem.child ? <ChildItemFunc menuItem={menuItem} /> : <></>}
               </ParentsMenuItem>
 
               {menuItem.name === "New" ? <BorderLine /> : <></>}

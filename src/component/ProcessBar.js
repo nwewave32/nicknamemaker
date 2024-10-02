@@ -1,7 +1,6 @@
-import React, { useState, useLayoutEffect, useCallback } from "react";
+import React from "react";
 import { FlexBox } from "./FlexBox";
-import { globalUtil, makeNameUtil } from "lib/util";
-import { CustomText } from "./CustomText";
+
 import styled from "styled-components";
 
 const BarColor = styled(FlexBox)`

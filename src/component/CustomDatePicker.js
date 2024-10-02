@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "lib/data/css/calendar.css";
 import { StyledFormContainer } from "./StyledFormContainer";
+import { globalUtil } from "lib/util";
 
 export const CustomDatePicker = ({
   title,
@@ -18,16 +19,23 @@ export const CustomDatePicker = ({
         dropdownMode={true}
         toggleCalendarOnIconClick={true}
         selected={dateValue}
-        onChange={(date) => {
+        onCalendarOpen={() => {
+          const target = document.querySelector(".react-datepicker-popper");
+          if (target) {
+            target.style.top = "-10px";
+            target.style.left = "-23%";
+          }
+        }}
+        onChange={(date, event) => {
           const newDt = moment(date);
-          if (date !== null && newDt.isValid()) {
+
+          if (!globalUtil.checkIsNull(newDt) && newDt.isValid()) {
             const returnVal = newDt.format("YYYY-MM-DD");
-            console.log("##returnVal", returnVal);
+
             changeCallback(returnVal);
           }
         }}
-        minDate="1990-01-01"
-        maxDate="2100-12-31"
+        selectsDisabledDaysInRange={true}
         dateFormat={["yyyy-MM-dd", "yyyyMMdd", "yyyy.MM.dd"]}
       />
     </StyledFormContainer>

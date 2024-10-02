@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useEffect, useState, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { FlexBox, Window, CustomImg } from "component";
+import { FlexBox, Window, CustomImg, CustomText } from "component";
 import { ControlBar } from "component/main/ControlBar";
 import {
   openWindowSelector,
@@ -12,7 +12,7 @@ import { colorStyle, randomImgList } from "lib/data/styleData";
 
 import { Intro } from "component/windows";
 import { Folders } from "component/main/Folders";
-import { globalUtil, storageUtil } from "lib/util";
+import { globalUtil, makeNameUtil, storageUtil } from "lib/util";
 import { TYPE } from "lib/data/constant";
 
 const BackgroundContainer = styled(FlexBox).attrs({
@@ -28,8 +28,21 @@ const BackgroundContainer = styled(FlexBox).attrs({
 
 export default function MainScreen({}) {
   const [windows, setWindows] = useRecoilState(windowsState);
+  const [name, setName] = useState("");
   useEffect(() => {
-    console.log("##windows", windows);
+    const info = {
+      birthday: "1997-03-24",
+      bloodType: "AB",
+      zodiac: "taurus",
+      vibe: {
+        name: "white",
+      },
+    };
+    const name = makeNameUtil.makeNameFuncMain(info, true);
+    console.log("##name", name);
+    setName(() => {
+      return `${name.first} ${name.middle || ""} ${name.last}`;
+    });
   }, [windows]);
   const openWindow = useSetRecoilState(openWindowSelector);
 
@@ -73,7 +86,9 @@ export default function MainScreen({}) {
     <>
       <BackgroundContainer>
         <Folders />
-
+        <CustomText fontSize={20}>
+          {name} {name.length}
+        </CustomText>
         {windows.map((window) => (
           <Window
             key={window.id}

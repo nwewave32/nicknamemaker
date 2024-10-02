@@ -51,7 +51,7 @@ export const Folders = ({}) => {
 
   const getStorageData = () => {
     const data = storageUtil.getData();
-    console.log("##data", data);
+
     if (Array.isArray(data) && data.length > 0) setStorageData(data);
     setNeedUpdate(false);
   };
@@ -62,7 +62,6 @@ export const Folders = ({}) => {
   useEffect(() => {
     if (needUpdate) {
       getStorageData();
-      console.log("##needUpdate", needUpdate);
     }
   }, [needUpdate]);
 

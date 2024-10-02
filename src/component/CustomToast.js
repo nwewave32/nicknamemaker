@@ -4,7 +4,7 @@ import "lib/data/css/toast.css";
 import { colorStyle } from "lib/data/styleData";
 
 import { FlexBox } from "./FlexBox";
-import styled, { keyframes, css } from "styled-components";
+import styled from "styled-components";
 
 import { WindowBox } from "./WindowBox";
 
@@ -30,15 +30,16 @@ Modal.setAppElement("#root");
 
 export const CustomToast = ({ toastVisible, setToastVisible, msg }) => {
   useEffect(() => {
-    setTimeout(() => setToastVisible(false), 2900);
-  }, []);
+    setTimeout(() => setToastVisible(false), 4900);
+  }, [setToastVisible]);
+
   return (
     <Modal
       isOpen={toastVisible}
       onRequestClose={() => {
         // setToastVisible((prev) => !prev);
       }}
-      closeTimeoutMS={2900}
+      closeTimeoutMS={4900}
       preventScroll={true}
       className="modal-content"
       overlayClassName="modal-overlay"
