@@ -45,14 +45,9 @@ const MakeNameUtil = () => {
   };
 
   const makeNameFuncSub = (zodiac, birthday, isKorean, leng) => {
-    const targetZodiac = zodiacConst.find((item) => item.value === zodiac);
+    const targetZodiac = zodiacConst.find((item) => item.name === zodiac);
     const nameLeng = targetZodiac.id % 2 === 0 ? 2 : 3;
-    console.log(
-      "##nameLeng",
-      nameLeng,
-      targetZodiac.id,
-      targetZodiac.id % 2 === 0
-    );
+
     if (isKorean) return generateKoreanName(nameLeng);
     else return generateEnglishName(leng);
   };

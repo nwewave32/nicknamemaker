@@ -28,22 +28,7 @@ const BackgroundContainer = styled(FlexBox).attrs({
 
 export default function MainScreen({}) {
   const [windows, setWindows] = useRecoilState(windowsState);
-  const [name, setName] = useState("");
-  useEffect(() => {
-    const info = {
-      birthday: "1997-03-24",
-      bloodType: "AB",
-      zodiac: "taurus",
-      vibe: {
-        name: "white",
-      },
-    };
-    const name = makeNameUtil.makeNameFuncMain(info, true);
-    console.log("##name", name);
-    setName(() => {
-      return `${name.first} ${name.middle || ""} ${name.last}`;
-    });
-  }, [windows]);
+
   const openWindow = useSetRecoilState(openWindowSelector);
 
   useLayoutEffect(() => {
@@ -86,9 +71,7 @@ export default function MainScreen({}) {
     <>
       <BackgroundContainer>
         <Folders />
-        <CustomText fontSize={20}>
-          {name} {name.length}
-        </CustomText>
+
         {windows.map((window) => (
           <Window
             key={window.id}
