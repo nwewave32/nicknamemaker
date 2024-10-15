@@ -273,7 +273,7 @@ export const IdCard = ({ info, id, forSave = false }) => {
             <Border />
             <BlockContainer>
               <CustomText fontSize={8} color={colorStyle.darkGray}>
-                Copyright 2021. KIMHAMIN. All rights reserved.
+                Copyright 2023. KIMHAMIN. All rights reserved.
               </CustomText>
             </BlockContainer>
           </ThirdCol>

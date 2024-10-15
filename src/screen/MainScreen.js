@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useEffect, useState, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { FlexBox, Window, CustomImg, CustomText } from "component";
+import { FlexBox, Window, CustomImg, CustomText, CustomModal } from "component";
 import { ControlBar } from "component/main/ControlBar";
 import {
   openWindowSelector,
@@ -28,7 +28,7 @@ const BackgroundContainer = styled(FlexBox).attrs({
 
 export default function MainScreen({}) {
   const [windows, setWindows] = useRecoilState(windowsState);
-
+  const [modalVisible, setModalVisible] = useState(false);
   const openWindow = useSetRecoilState(openWindowSelector);
 
   useLayoutEffect(() => {
@@ -47,7 +47,6 @@ export default function MainScreen({}) {
   }, []);
 
   const toggleWindowVisibility = (id) => {
-    console.log("##id", id);
     if (id === 0)
       setWindows(
         windows.map((w) => {
@@ -67,6 +66,16 @@ export default function MainScreen({}) {
       );
   };
 
+  const handleResize = () => {
+    setModalVisible(window.innerWidth <= 768);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <>
       <BackgroundContainer>
@@ -83,6 +92,13 @@ export default function MainScreen({}) {
         <ControlBar
           windows={windows}
           toggleWindowVisibility={toggleWindowVisibility}
+        />
+        <CustomModal
+          modalVisible={modalVisible}
+          setModalVisible={() => {}}
+          msg="화면이 너무 작아요 ㅠㅠㅠ"
+          title="Warning!"
+          icon="images/icons/warning.png"
         />
       </BackgroundContainer>
     </>

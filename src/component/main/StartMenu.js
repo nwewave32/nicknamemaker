@@ -155,10 +155,6 @@ export const StartMenu = forwardRef((props, ref) => {
     if (!isShowMenu) setIsShowChildMenu(""); // 부모 사라지면 자식도 같이 사라짐
   }, [isShowMenu]);
 
-  useEffect(() => {
-    console.log("##toastVisible", toastVisible);
-  }, [toastVisible]);
-
   const defaultWindow = {
     id: Date.now(),
     type: "",
