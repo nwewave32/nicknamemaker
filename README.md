@@ -1,70 +1,61 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+# 💾 nicknamemaker
 
-### `npm start`
+**nicknamemaker**는 Windows 95 스타일로 디자인된 이름 짓기 웹사이트입니다. 이 사이트는 사용자가 새로운 이름을 생성하거나 자신의 이름을 입력하여 ID 카드를 만들 수 있도록 도와줍니다. 레트로한 느낌을 주는 이 사이트는 과거의 추억을 불러일으키면서도 새로운 사용자에게도 즐거움을 제공합니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<img width="1470" alt="nicknamemaker1" src="https://github.com/user-attachments/assets/ea3fa38d-210c-4914-bdab-9a8ae1c8d0f0">
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## 목차
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. [소개](#소개)
+2. [기능](#기능)
+3. [시작하기](#시작하기)
+4. [사용 방법](#사용-방법)
+5. [기여하기](#기여하기)
+6. [라이선스](#라이선스)
 
-### `npm run build`
+## 소개
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**nicknamemaker**는 Windows 95의 컴퓨터 느낌을 살린 웹 프로젝트로, 컨트롤 바와 스타트 버튼을 통해 메뉴를 탐색할 수 있습니다. 사용자는 이름 짓기 기능을 활용하여 새로운 이름을 생성하거나, 자신의 이름을 입력하여 새로운 ID 카드를 생성할 수 있습니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<img width="1470" alt="nicknamemaker4" src="https://github.com/user-attachments/assets/0913dc9c-6f20-4742-b8b2-cae0deed25e6">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 기능
 
-### `npm run eject`
+- **이름 짓기**: 랜덤 이름 생성기 기능을 통해 다양한 이름을 생성합니다.
+- **ID 카드 생성**: 사용자가 입력한 이름을 바탕으로 ID 카드를 만들 수 있습니다.
+- **공유 및 다운로드**: 생성된 이름이나 ID 카드를 이미지로 다운로드하여 공유할 수 있습니다.
+- **로컬 저장**: 생성된 ID 카드는 로컬 스토리지에 저장되어 삭제하지 않는 한 계속 사용할 수 있습니다.
+- **다양한 용도**: 게임 캐릭터, 인스타그램 ID, 동식물 이름 등 다양한 용도로 활용할 수 있습니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 시작하기
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+웹사이트에 접속하려면 아래 링크를 클릭하세요:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+[https://nwewave32.github.io/nicknamemaker/](https://nwewave32.github.io/nicknamemaker/)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+브라우저에서 바로 실행 가능하며, 별도의 설치가 필요하지 않습니다.
 
-## Learn More
+## 사용 방법
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. 링크를 통해 사이트에 접속합니다.
+2. 스타트 버튼을 클릭하여 Windows 95 스타일의 메뉴를 엽니다.
+3. "이름 짓기" 옵션을 선택하여 랜덤 이름을 생성합니다.
+4. 자신의 이름을 입력하여 ID 카드를 생성합니다.
+5. 생성된 ID 카드는 이미지로 다운로드하거나 공유할 수 있습니다.
+6. 로컬 스토리지를 통해 생성된 ID 카드가 저장됩니다.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 기여하기
 
-### Code Splitting
+이 프로젝트에 기여하고 싶다면 GitHub 저장소에서 풀 리퀘스트를 보내거나 이슈를 열어주세요.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 라이선스
 
-### Analyzing the Bundle Size
+이 프로젝트는 오픈 소스로, [MIT 라이선스](https://opensource.org/licenses/MIT)에 따라 제공됩니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
